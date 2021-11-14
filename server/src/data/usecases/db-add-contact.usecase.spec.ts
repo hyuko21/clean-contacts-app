@@ -1,17 +1,19 @@
 import faker from 'faker'
-import { CheckContactByEmailRepositorySpy } from '@/data/mocks/mock-db-repositories'
+import { AddContactRepositorySpy, CheckContactByEmailRepositorySpy } from '@/data/mocks/mock-db-repositories'
 import { IAddContactUseCase } from '@/domain/usecases'
 import { DbAddContactUseCase } from './db-add-contact.usecase'
 
 type SutTypes = {
   sut: DbAddContactUseCase
   checkContactByEmailRepository: CheckContactByEmailRepositorySpy
+  addContactRepository: AddContactRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
   const checkContactByEmailRepository = new CheckContactByEmailRepositorySpy()
-  const sut = new DbAddContactUseCase(checkContactByEmailRepository)
-  return { sut, checkContactByEmailRepository }
+  const addContactRepository = new AddContactRepositorySpy()
+  const sut = new DbAddContactUseCase(checkContactByEmailRepository, addContactRepository)
+  return { sut, checkContactByEmailRepository, addContactRepository }
 }
 
 const mockParams = (): IAddContactUseCase.Params => ({
@@ -50,6 +52,30 @@ describe('DbAddContact UseCase', () => {
       const result = await sut.execute(mockParams())
 
       expect(result).toBe(true)
+    })
+  })
+
+  describe('when contact by email not found', () => {
+    beforeEach(() => {
+      jest.spyOn(sutTypes.checkContactByEmailRepository, 'checkByEmail')
+        .mockResolvedValueOnce(false)
+    })
+
+    describe('AddContact Repository dependency', () => {
+      it('should call add() with correct params', async () => {
+        const { sut, addContactRepository } = sutTypes
+        const params = mockParams()
+
+        await sut.execute(params)
+
+        expect(addContactRepository.params).toEqual(params)
+      })
+
+      it('should return same as add() returns', async () => {
+        const { sut, addContactRepository } = sutTypes
+        const result = await sut.execute(mockParams())
+        expect(result).toBe(addContactRepository.result)
+      })
     })
   })
 })
