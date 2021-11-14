@@ -1,7 +1,8 @@
 module.exports = {
   env: {
     es2021: true,
-    node: true
+    node: true,
+    jest: true
   },
   extends: [
     'standard-with-typescript'
@@ -21,6 +22,7 @@ module.exports = {
     '@typescript-eslint/no-namespace': 'off',
     '@typescript-eslint/consistent-type-definitions': 'off',
     '@typescript-eslint/consistent-type-assertions': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'off',
     'import/export': 'off'
   }
 }
