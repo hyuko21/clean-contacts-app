@@ -26,13 +26,27 @@ const mockRequest = (): AddContactController.Request => ({
 })
 
 describe('AddContact Controller', () => {
+  let sutTypes: SutTypes
+
+  beforeEach(() => {
+    sutTypes = makeSut()
+  })
+
   describe('AddContact UseCase dependency', () => {
+    it('should call execute() with correct params', async () => {
+      const { sut, addContactUseCase } = sutTypes
+      const request = mockRequest()
+
+      await sut.handle(request)
+
+      expect(addContactUseCase.params).toEqual(request)
+    })
+
     it('should return `success` with execute() returned result', async () => {
-      const { sut, addContactUseCase } = makeSut()
+      const { sut, addContactUseCase } = sutTypes
       addContactUseCase.result = false
 
-      const request = mockRequest()
-      const response = await sut.handle(request)
+      const response = await sut.handle(mockRequest())
 
       expect(response).toEqual({ statusCode: 200, body: { success: addContactUseCase.result } })
     })

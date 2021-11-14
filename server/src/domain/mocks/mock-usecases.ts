@@ -1,10 +1,12 @@
-import { IAddContactUseCase } from '@/domain/usecases'
 import faker from 'faker'
+import { IAddContactUseCase } from '@/domain/usecases'
 
 export class AddContactUseCaseSpy implements IAddContactUseCase {
+  params?: IAddContactUseCase.Params
   result = true
 
   async execute (params: IAddContactUseCase.Params): Promise<IAddContactUseCase.Result> {
+    this.params = params
     return this.result
   }
 }
