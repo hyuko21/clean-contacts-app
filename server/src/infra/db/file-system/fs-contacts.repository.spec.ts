@@ -30,15 +30,27 @@ describe('Contacts FileSystem Repository', () => {
       const params = mockAddContactUseCaseParams()
       await mockAddOneContact(params)
 
-      const exists = await sut.checkByEmail({ email: params.email })
+      const result = await sut.checkByEmail({ email: params.email })
 
-      expect(exists).toBe(true)
+      expect(result).toBe(true)
     })
 
     it('should return false if contact not found by email', async () => {
       await mockAddOneContact(mockAddContactUseCaseParams())
-      const exists = await sut.checkByEmail({ email: faker.internet.email() })
-      expect(exists).toBe(false)
+      const result = await sut.checkByEmail({ email: faker.internet.email() })
+      expect(result).toBe(false)
+    })
+  })
+
+  describe('add()', () => {
+    it('should return true and insert contact on success', async () => {
+      const params = mockAddContactUseCaseParams()
+
+      const result = await sut.add(params)
+
+      const [addedContact] = await sut.repository.find()
+      expect(result).toBe(true)
+      expect(addedContact).toEqual(expect.objectContaining(params))
     })
   })
 })
