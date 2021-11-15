@@ -13,6 +13,7 @@
   "devDependencies": {
     "@types/app-root-path": "^1.2.4",
     "@types/dotenv-flow": "^3.2.0",
+    "@types/express": "^4.17.13",
     "@types/faker": "^5.5.9",
     "@types/jest": "^27.0.2",
     "@typescript-eslint/eslint-plugin": "^5.3.1",
@@ -30,6 +31,7 @@
   "dependencies": {
     "app-root-path": "^3.0.0",
     "cuid": "^2.1.8",
-    "dotenv-flow": "^3.2.0"
+    "dotenv-flow": "^3.2.0",
+    "express": "^4.17.1"
   }
 }
