@@ -1,6 +1,10 @@
 import { Express } from 'express'
-import { bodyParser } from '@/main/middlewares'
+import { bodyParser, errorHandler } from '@/main/middlewares'
 
-export default (app: Express): void => {
+export const setupMiddlewares = (app: Express): void => {
   app.use(bodyParser)
+}
+
+export const setupHandlers = (app: Express): void => {
+  app.use(errorHandler)
 }
