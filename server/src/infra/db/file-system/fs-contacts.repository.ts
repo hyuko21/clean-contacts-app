@@ -8,7 +8,7 @@ export class FileSystemContactsRepository extends FileSystemAbstractRepository<C
   }
 
   async checkByEmail (params: ICheckContactByEmailRepository.Params): Promise<boolean> {
-    const customers = await this.find()
+    const customers = await this.repository.find()
     const exists = customers.some((customer: any) => customer.email === params.email)
     return exists
   }
