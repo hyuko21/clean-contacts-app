@@ -1,7 +1,7 @@
-import faker from 'faker'
 import { AddContactUseCaseSpy } from '@/domain/mocks/mock-usecases'
 import { AddContactController } from './add-contact.controller'
 import { ok } from '@/presentation/helpers'
+import { mockAddContactRequest } from './mocks/mock-contacts-controller'
 
 type SutTypes = {
   sut: AddContactController
@@ -14,18 +14,6 @@ const makeSut = (): SutTypes => {
   return { sut, addContactUseCase }
 }
 
-const mockRequest = (): AddContactController.Request => ({
-  name: faker.name.findName(),
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
-  address: {
-    houseNumber: faker.datatype.number(),
-    streetName: faker.address.streetName(),
-    city: faker.address.cityName(),
-    state: faker.address.stateAbbr()
-  }
-})
-
 describe('AddContact Controller', () => {
   let sutTypes: SutTypes
 
@@ -36,7 +24,7 @@ describe('AddContact Controller', () => {
   describe('AddContact UseCase dependency', () => {
     it('should call execute() with correct params', async () => {
       const { sut, addContactUseCase } = sutTypes
-      const request = mockRequest()
+      const request = mockAddContactRequest()
 
       await sut.handle(request)
 
@@ -47,9 +35,11 @@ describe('AddContact Controller', () => {
       const { sut, addContactUseCase } = sutTypes
       addContactUseCase.result = false
 
-      const response = await sut.handle(mockRequest())
+      const response = await sut.handle(mockAddContactRequest())
 
-      expect(response).toEqual(ok({ success: addContactUseCase.result }))
+      expect(response).toEqual(
+        ok({ success: addContactUseCase.result, error: 'Contact is invalid' })
+      )
     })
   })
 })

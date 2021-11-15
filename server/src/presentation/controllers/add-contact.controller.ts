@@ -1,6 +1,6 @@
 import { IAddContactUseCase } from '@/domain/usecases'
 import { IController, HttpResponse } from '@/presentation/protocols'
-import { ok } from '@/presentation/helpers'
+import { ok, makeAppResponse } from '@/presentation/helpers'
 
 export class AddContactController implements IController {
   constructor (private readonly addContactUseCase: IAddContactUseCase) {}
@@ -17,7 +17,10 @@ export class AddContactController implements IController {
         state: request.address.state
       }
     })
-    const response = { success: isValid }
+    let response = makeAppResponse()
+    if (!isValid) {
+      response = makeAppResponse({ error: 'Contact is invalid' })
+    }
 
     return ok(response)
   }
