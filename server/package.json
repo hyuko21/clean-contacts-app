@@ -8,7 +8,7 @@
     "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json",
     "start": "node dist/main/server",
-    "start:dev": "tsnd -r tsconfig-paths/register --respawn --transpile-only src/main/server",
+    "start:dev": "tsnd -r tsconfig-paths/register --respawn --exit-child --transpile-only src/main/server",
     "lint": "eslint",
     "test": "jest",
     "test:watch": "yarn test --watch",
@@ -44,8 +44,10 @@
     "cuid": "^2.1.8",
     "dotenv-flow": "^3.2.0",
     "express": "^4.17.1",
+    "express-winston": "^4.2.0",
     "glob": "^7.2.0",
-    "module-alias": "^2.2.2"
+    "module-alias": "^2.2.2",
+    "winston": "^3.3.3"
   },
   "_moduleAliases": {
     "@": "dist"
