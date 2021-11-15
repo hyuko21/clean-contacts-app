@@ -17,12 +17,18 @@ export class FileSystemHelper {
     return `${env.STORAGE_BASE_PATH}/${filename}`
   }
 
-  async open (filename: string): Promise<boolean> {
-    try {
-      await promisify(access)(this.getStoragePath(filename))
-    } catch (error) {
-      await promisify(mkdir)(env.STORAGE_BASE_PATH, { recursive: true })
-      await this.addContents(filename, '')
+  async open (filename?: string): Promise<boolean> {
+    const makeStorageDir = () => promisify(mkdir)(env.STORAGE_BASE_PATH, { recursive: true })
+
+    if (!filename) {
+      await makeStorageDir()
+    } else {
+      try {
+        await promisify(access)(this.getStoragePath(filename))
+      } catch (error) {
+        await makeStorageDir()
+        await this.addContents(filename, '')
+      }
     }
     return true
   }
