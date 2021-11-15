@@ -4,6 +4,9 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "type-check": "tsc --project tsconfig.json --skipLibCheck --noEmit",
+    "prebuild": "rimraf dist",
+    "build": "tsc -p tsconfig.build.json",
     "lint": "eslint",
     "test": "jest --watch"
   },
@@ -20,6 +23,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "faker": "^5.5.3",
     "jest": "^27.3.1",
+    "rimraf": "^3.0.2",
     "ts-jest": "^27.0.7",
     "typescript": "^4.4.4"
   },
