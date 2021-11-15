@@ -1,0 +1,11 @@
+# dependencies
+node_modules
+
+# build assets
+dist
+
+# env
+.env.example
+
+# storage folders
+*storage
