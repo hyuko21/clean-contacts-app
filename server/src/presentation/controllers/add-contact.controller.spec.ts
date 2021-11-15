@@ -1,6 +1,7 @@
 import faker from 'faker'
 import { AddContactUseCaseSpy } from '@/domain/mocks/mock-usecases'
 import { AddContactController } from './add-contact.controller'
+import { ok } from '@/presentation/helpers'
 
 type SutTypes = {
   sut: AddContactController
@@ -48,7 +49,7 @@ describe('AddContact Controller', () => {
 
       const response = await sut.handle(mockRequest())
 
-      expect(response).toEqual({ statusCode: 200, body: { success: addContactUseCase.result } })
+      expect(response).toEqual(ok({ success: addContactUseCase.result }))
     })
   })
 })

@@ -1,6 +1,6 @@
 import { IAddContactUseCase } from '@/domain/usecases'
-import { IController } from '@/presentation/protocols/controller'
-import { HttpResponse } from '@/presentation/protocols/http'
+import { IController, HttpResponse } from '@/presentation/protocols'
+import { ok } from '@/presentation/helpers'
 
 export class AddContactController implements IController {
   constructor (private readonly addContactUseCase: IAddContactUseCase) {}
@@ -19,7 +19,7 @@ export class AddContactController implements IController {
     })
     const response = { success: isValid }
 
-    return { statusCode: 200, body: response }
+    return ok(response)
   }
 }
 
