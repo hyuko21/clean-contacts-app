@@ -1,4 +1,18 @@
+import { FormEvent, useState } from 'react'
+import { CountrySelect, StateProvinceInput } from '../../helpers'
+
 export function AddContactPage() {
+  const [contact, setContact] = useState<Contact>({} as Contact)
+
+  const updateContact = (e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
+    setContact({ ...contact, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    console.log(contact)
+  }
+
   return (
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-3 md:gap-6">
@@ -9,7 +23,7 @@ export function AddContactPage() {
           </div>
         </div>
         <div className="mt-5 md:mt-0 md:col-span-2">
-          <form action="#" method="POST">
+          <form onSubmit={handleSubmit}>
             <div className="shadow overflow-hidden sm:rounded-md">
               <div className="px-4 py-5 bg-white sm:p-6">
                 <div className="grid grid-cols-6 gap-6">
@@ -20,6 +34,9 @@ export function AddContactPage() {
                     <input
                       type="text"
                       name="name"
+                      required
+                      value={contact.name}
+                      onChange={updateContact}
                       id="name"
                       autoComplete="given-name"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -33,6 +50,9 @@ export function AddContactPage() {
                     <input
                       type="text"
                       name="phone"
+                      required
+                      value={contact.phone}
+                      onChange={updateContact}
                       id="phone"
                       autoComplete="phone"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -40,12 +60,15 @@ export function AddContactPage() {
                   </div>
 
                   <div className="col-span-6 sm:col-span-4">
-                    <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                       Email address
                     </label>
                     <input
-                      type="text"
-                      name="email-address"
+                      type="email"
+                      name="email"
+                      required
+                      value={contact.email}
+                      onChange={updateContact}
                       id="email-address"
                       autoComplete="email"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -56,28 +79,32 @@ export function AddContactPage() {
                     <label htmlFor="country" className="block text-sm font-medium text-gray-700">
                       Country
                     </label>
-                    <select
+                    <CountrySelect
                       id="country"
                       name="country"
+                      required
+                      value={contact.country}
+                      onChange={updateContact}
                       autoComplete="country-name"
                       className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    >
-                      <option>United States</option>
-                      <option>Canada</option>
-                      <option>Mexico</option>
-                    </select>
+                    />
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="region" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="state" className="block text-sm font-medium text-gray-700">
                       State / Province
                     </label>
-                    <input
+                    <StateProvinceInput
+                      countrycode={contact.country}
+                      disabled={!contact.country}
                       type="text"
-                      name="region"
+                      name="state"
+                      required
+                      value={contact.state}
+                      onChange={updateContact}
                       id="region"
                       autoComplete="address-level1"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="disabled:opacity-50 disabled:cursor-not-allowed mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
 
@@ -86,21 +113,28 @@ export function AddContactPage() {
                       City
                     </label>
                     <input
+                      disabled={!contact.state}
                       type="text"
                       name="city"
+                      required
+                      value={contact.city}
+                      onChange={updateContact}
                       id="city"
                       autoComplete="address-level2"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="disabled:opacity-50 disabled:cursor-not-allowed mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="house-number" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="houseNumber" className="block text-sm font-medium text-gray-700">
                       House number
                     </label>
                     <input
-                      type="text"
-                      name="house-number"
+                      type="number"
+                      name="houseNumber"
+                      required
+                      value={contact.houseNumber}
+                      onChange={updateContact}
                       id="house-number"
                       autoComplete="house-number"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -108,12 +142,15 @@ export function AddContactPage() {
                   </div>
 
                   <div className="col-span-6">
-                    <label htmlFor="street-address" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="streetName" className="block text-sm font-medium text-gray-700">
                       Street address
                     </label>
                     <input
                       type="text"
-                      name="street-address"
+                      name="streetName"
+                      required
+                      value={contact.streetName}
+                      onChange={updateContact}
                       id="street-address"
                       autoComplete="street-address"
                       className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
