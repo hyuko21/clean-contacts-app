@@ -19,7 +19,9 @@ export class AddContactController implements IController {
     })
     let response = makeAppResponse()
     if (!isValid) {
-      response = makeAppResponse({ error: 'Contact is invalid' })
+      response = makeAppResponse({
+        error: 'Contact for this e-mail address already exists'
+      })
     }
 
     return ok(response)
