@@ -1,5 +1,13 @@
+import { Container, Header } from './components'
+import { AddContactPage } from './pages/contacts'
+
 export function App() {
   return (
-    <h1>Contacts App</h1>
+    <>
+      <Header />
+      <Container>
+        <AddContactPage />
+      </Container>
+    </>
   )
 }
