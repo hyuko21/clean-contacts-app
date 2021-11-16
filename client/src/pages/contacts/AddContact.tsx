@@ -1,6 +1,8 @@
 import { FormEvent, useState } from 'react'
+import { toast } from 'react-toastify'
 import { CountrySelect, StateProvinceInput } from '../../helpers'
 import { ContactsService } from '../../services/api/contacts'
+import { Loading } from '../../components'
 
 export function AddContactPage() {
   const [contact, setContact] = useState<Contact>({} as Contact)
@@ -26,13 +28,15 @@ export function AddContactPage() {
           state: contact.state
         }
       })
+
       if (data.success) {
         setContact({} as Contact)
+        toast.success('Contact info saved')
       } else {
-        
+        toast.error(data.error)
       }
     } catch (error) {
-      console.log(error)
+      toast.error('Something went wrong. Please try again later')
     } finally {
       setIsLoading(false)
     }
@@ -48,157 +52,156 @@ export function AddContactPage() {
           </div>
         </div>
         <div className="mt-5 md:mt-0 md:col-span-2">
+        {isLoading ? (
+          <Loading />
+        ) : (
           <form onSubmit={handleSubmit}>
             <div className="shadow overflow-hidden sm:rounded-md">
-              <div className="px-4 py-5 bg-white sm:p-6">
-                <div className="grid grid-cols-6 gap-6">
-                  <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      disabled={isLoading}
-                      required
-                      value={contact.name}
-                      onChange={updateContact}
-                      id="name"
-                      autoComplete="given-name"
-                      className="disabled:bg-gray-300 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
+                <div className="px-4 py-5 bg-white sm:p-6">
+                  <div className="grid grid-cols-6 gap-6">
+                    <div className="col-span-6 sm:col-span-3">
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        required
+                        value={contact.name}
+                        onChange={updateContact}
+                        id="name"
+                        autoComplete="given-name"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
 
-                  <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                      Phone
-                    </label>
-                    <input
-                      type="text"
-                      name="phone"
-                      disabled={isLoading}
-                      required
-                      value={contact.phone}
-                      onChange={updateContact}
-                      id="phone"
-                      autoComplete="phone"
-                      className="disabled:bg-gray-300 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                        Phone
+                      </label>
+                      <input
+                        type="text"
+                        name="phone"
+                        required
+                        value={contact.phone}
+                        onChange={updateContact}
+                        id="phone"
+                        autoComplete="phone"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
 
-                  <div className="col-span-6 sm:col-span-4">
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                      Email address
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      disabled={isLoading}
-                      required
-                      value={contact.email}
-                      onChange={updateContact}
-                      id="email-address"
-                      autoComplete="email"
-                      className="disabled:bg-gray-300 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
+                    <div className="col-span-6 sm:col-span-4">
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                        Email address
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        required
+                        value={contact.email}
+                        onChange={updateContact}
+                        id="email-address"
+                        autoComplete="email"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
 
-                  <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="country" className="block text-sm font-medium text-gray-700">
-                      Country
-                    </label>
-                    <CountrySelect
-                      id="country"
-                      name="country"
-                      disabled={isLoading}
-                      required
-                      value={contact.country}
-                      onChange={updateContact}
-                      autoComplete="country-name"
-                      className="disabled:bg-gray-300 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
-                  </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+                        Country
+                      </label>
+                      <CountrySelect
+                        id="country"
+                        name="country"
+                        required
+                        value={contact.country}
+                        onChange={updateContact}
+                        autoComplete="country-name"
+                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      />
+                    </div>
 
-                  <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="state" className="block text-sm font-medium text-gray-700">
-                      State / Province
-                    </label>
-                    <StateProvinceInput
-                      countrycode={contact.country}
-                      disabled={!contact.country || isLoading}
-                      type="text"
-                      name="state"
-                      required
-                      value={contact.state}
-                      onChange={updateContact}
-                      id="region"
-                      autoComplete="address-level1"
-                      className="disabled:bg-gray-300 disabled:cursor-not-allowed mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <label htmlFor="state" className="block text-sm font-medium text-gray-700">
+                        State / Province
+                      </label>
+                      <StateProvinceInput
+                        countrycode={contact.country}
+                        disabled={!contact.country}
+                        type="text"
+                        name="state"
+                        required
+                        value={contact.state}
+                        onChange={updateContact}
+                        id="region"
+                        autoComplete="address-level1"
+                        className="disabled:bg-gray-300 disabled:cursor-not-allowed mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
 
-                  <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="city" className="block text-sm font-medium text-gray-700">
-                      City
-                    </label>
-                    <input
-                      disabled={!contact.state || isLoading}
-                      type="text"
-                      name="city"
-                      required
-                      value={contact.city}
-                      onChange={updateContact}
-                      id="city"
-                      autoComplete="address-level2"
-                      className="disabled:bg-gray-300 disabled:cursor-not-allowed mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+                        City
+                      </label>
+                      <input
+                        disabled={!contact.state}
+                        type="text"
+                        name="city"
+                        required
+                        value={contact.city}
+                        onChange={updateContact}
+                        id="city"
+                        autoComplete="address-level2"
+                        className="disabled:bg-gray-300 disabled:cursor-not-allowed mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
 
-                  <div className="col-span-6 sm:col-span-3">
-                    <label htmlFor="houseNumber" className="block text-sm font-medium text-gray-700">
-                      House number
-                    </label>
-                    <input
-                      type="number"
-                      name="houseNumber"
-                      disabled={isLoading}
-                      required
-                      value={contact.houseNumber}
-                      onChange={updateContact}
-                      id="house-number"
-                      autoComplete="house-number"
-                      className="disabled:bg-gray-300 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
-                  </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <label htmlFor="houseNumber" className="block text-sm font-medium text-gray-700">
+                        House number
+                      </label>
+                      <input
+                        type="number"
+                        name="houseNumber"
+                        required
+                        value={contact.houseNumber}
+                        onChange={updateContact}
+                        id="house-number"
+                        autoComplete="house-number"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
 
-                  <div className="col-span-6">
-                    <label htmlFor="streetName" className="block text-sm font-medium text-gray-700">
-                      Street address
-                    </label>
-                    <input
-                      type="text"
-                      name="streetName"
-                      disabled={isLoading}
-                      required
-                      value={contact.streetName}
-                      onChange={updateContact}
-                      id="street-address"
-                      autoComplete="street-address"
-                      className="disabled:bg-gray-300 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                    />
+                    <div className="col-span-6">
+                      <label htmlFor="streetName" className="block text-sm font-medium text-gray-700">
+                        Street address
+                      </label>
+                      <input
+                        type="text"
+                        name="streetName"
+                        required
+                        value={contact.streetName}
+                        onChange={updateContact}
+                        id="street-address"
+                        autoComplete="street-address"
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
               <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                 <button
                   type="submit"
-                  className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
+                  disabled={isLoading}
+                  className="disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-indigo-600 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
                   Submit
                 </button>
               </div>
             </div>
           </form>
+        )}
         </div>
       </div>
     </div>
