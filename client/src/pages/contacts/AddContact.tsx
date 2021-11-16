@@ -1,16 +1,41 @@
 import { FormEvent, useState } from 'react'
 import { CountrySelect, StateProvinceInput } from '../../helpers'
+import { ContactsService } from '../../services/api/contacts'
 
 export function AddContactPage() {
   const [contact, setContact] = useState<Contact>({} as Contact)
+  const [isLoading, setIsLoading] = useState(false)
 
   const updateContact = (e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
     setContact({ ...contact, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    console.log(contact)
+
+    setIsLoading(true)
+    try {
+      const { data } = await ContactsService.addContact({
+        name: contact.name,
+        email: contact.email,
+        phone: contact.phone,
+        address: {
+          houseNumber: contact.houseNumber,
+          streetName: contact.streetName,
+          city: contact.city,
+          state: contact.state
+        }
+      })
+      if (data.success) {
+        setContact({} as Contact)
+      } else {
+        
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -34,12 +59,13 @@ export function AddContactPage() {
                     <input
                       type="text"
                       name="name"
+                      disabled={isLoading}
                       required
                       value={contact.name}
                       onChange={updateContact}
                       id="name"
                       autoComplete="given-name"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="disabled:bg-gray-300 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
 
@@ -50,12 +76,13 @@ export function AddContactPage() {
                     <input
                       type="text"
                       name="phone"
+                      disabled={isLoading}
                       required
                       value={contact.phone}
                       onChange={updateContact}
                       id="phone"
                       autoComplete="phone"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="disabled:bg-gray-300 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
 
@@ -66,12 +93,13 @@ export function AddContactPage() {
                     <input
                       type="email"
                       name="email"
+                      disabled={isLoading}
                       required
                       value={contact.email}
                       onChange={updateContact}
                       id="email-address"
                       autoComplete="email"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="disabled:bg-gray-300 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
 
@@ -82,11 +110,12 @@ export function AddContactPage() {
                     <CountrySelect
                       id="country"
                       name="country"
+                      disabled={isLoading}
                       required
                       value={contact.country}
                       onChange={updateContact}
                       autoComplete="country-name"
-                      className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      className="disabled:bg-gray-300 mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                   </div>
 
@@ -96,7 +125,7 @@ export function AddContactPage() {
                     </label>
                     <StateProvinceInput
                       countrycode={contact.country}
-                      disabled={!contact.country}
+                      disabled={!contact.country || isLoading}
                       type="text"
                       name="state"
                       required
@@ -104,7 +133,7 @@ export function AddContactPage() {
                       onChange={updateContact}
                       id="region"
                       autoComplete="address-level1"
-                      className="disabled:opacity-50 disabled:cursor-not-allowed mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="disabled:bg-gray-300 disabled:cursor-not-allowed mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
 
@@ -113,7 +142,7 @@ export function AddContactPage() {
                       City
                     </label>
                     <input
-                      disabled={!contact.state}
+                      disabled={!contact.state || isLoading}
                       type="text"
                       name="city"
                       required
@@ -121,7 +150,7 @@ export function AddContactPage() {
                       onChange={updateContact}
                       id="city"
                       autoComplete="address-level2"
-                      className="disabled:opacity-50 disabled:cursor-not-allowed mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="disabled:bg-gray-300 disabled:cursor-not-allowed mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
 
@@ -132,12 +161,13 @@ export function AddContactPage() {
                     <input
                       type="number"
                       name="houseNumber"
+                      disabled={isLoading}
                       required
                       value={contact.houseNumber}
                       onChange={updateContact}
                       id="house-number"
                       autoComplete="house-number"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="disabled:bg-gray-300 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
 
@@ -148,12 +178,13 @@ export function AddContactPage() {
                     <input
                       type="text"
                       name="streetName"
+                      disabled={isLoading}
                       required
                       value={contact.streetName}
                       onChange={updateContact}
                       id="street-address"
                       autoComplete="street-address"
-                      className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      className="disabled:bg-gray-300 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                     />
                   </div>
                 </div>
