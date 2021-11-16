@@ -6,7 +6,7 @@ import * as testApp from '@/test-helpers/app'
 import setupContactsRoutes from './contacts.routes'
 import { mockAddOneContact } from '@/infra/db/file-system/test-helpers/fs-contacts'
 import { FileSystemContactsRepository } from '@/infra/db/file-system'
-import { mockAddContactRequest } from '@/presentation/controllers/mocks/mock-contacts-controller'
+import { mockAddContactRequest } from '@/presentation/mocks/mock-controllers'
 
 describe('Contacts Routes', () => {
   const contactsRepository = new FileSystemContactsRepository()
@@ -40,7 +40,10 @@ describe('Contacts Routes', () => {
 
     it('should return 200 with `success` as false if contact already exists', async () => {
       await mockAddOneContact(requestBody)
-      await requestTest.expect(200, { success: false, error: 'Contact is invalid' })
+      await requestTest.expect(200, {
+        success: false,
+        error: 'Contact for this e-mail address already exists'
+      })
     })
 
     describe('when contact is invalid should return 200 with `success` as false', () => {

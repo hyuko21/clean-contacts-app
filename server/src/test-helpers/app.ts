@@ -1,4 +1,5 @@
 import { setupMiddlewares, setupHandlers } from '@/main/config/middlewares'
+import { bodyParser, contentType, cors } from '@/main/middlewares'
 import express from 'express'
 
 type AppMockOpts = {
@@ -12,7 +13,11 @@ type AppMock = {
 
 export const mockApp = (opts: AppMockOpts = { withValidation: true }): AppMock => {
   const app = express()
-  setupMiddlewares(app)
+  setupMiddlewares(app, [
+    bodyParser,
+    cors,
+    contentType
+  ])
   const router = express.Router()
   app.use(router)
   if (opts.withValidation) {

@@ -8,6 +8,7 @@ module.exports = {
   transform: {
     '^.+\\.ts$': 'ts-jest'
   },
+  testMatch: ['**/*spec.ts'],
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1'
   }

@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { ContactModel } from '@/domain/models'
-import { mockAbstractModel } from '@/common/models/mocks/mock-abstract.model'
+import { mockAbstractModel } from '@/common/models/mocks/mock-models'
 
 export const mockContactModel = (): ContactModel => ({
   name: faker.name.findName(),

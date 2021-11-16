@@ -7,13 +7,21 @@ import {
   contentType
 } from '@/main/middlewares'
 
-export const setupMiddlewares = (app: Express): void => {
-  app.use(bodyParser)
-  app.use(cors)
-  app.use(contentType)
-  app.use(loggerHandler)
+const middlewares = [
+  bodyParser,
+  cors,
+  contentType,
+  loggerHandler
+]
+
+const handlers = [
+  errorHandler
+]
+
+export const setupMiddlewares = (app: Express, useMiddlewares = middlewares): void => {
+  useMiddlewares.forEach(middleware => app.use(middleware))
 }
 
-export const setupHandlers = (app: Express): void => {
-  app.use(errorHandler)
+export const setupHandlers = (app: Express, useHandlers = handlers): void => {
+  useHandlers.forEach(handler => app.use(handler))
 }

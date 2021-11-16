@@ -1,7 +1,7 @@
 import { AddContactUseCaseSpy } from '@/domain/mocks/mock-usecases'
 import { AddContactController } from './add-contact.controller'
 import { ok } from '@/presentation/helpers'
-import { mockAddContactRequest } from './mocks/mock-contacts-controller'
+import { mockAddContactRequest } from '@/presentation/mocks/mock-controllers'
 
 type SutTypes = {
   sut: AddContactController
@@ -38,7 +38,10 @@ describe('AddContact Controller', () => {
       const response = await sut.handle(mockAddContactRequest())
 
       expect(response).toEqual(
-        ok({ success: addContactUseCase.result, error: 'Contact is invalid' })
+        ok({
+          success: addContactUseCase.result,
+          error: 'Contact for this e-mail address already exists'
+        })
       )
     })
   })
