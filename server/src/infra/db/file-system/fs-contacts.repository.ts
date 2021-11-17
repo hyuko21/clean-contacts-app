@@ -2,7 +2,8 @@ import {
   IAddContactRepository,
   ICheckContactByEmailRepository,
   IListContactRepository,
-  ILoadContactByIdRepository
+  ILoadContactByIdRepository,
+  ISaveContactRepository
 } from '@/data/protocols/db'
 import { FileSystemAbstractRepository } from '@/common/db/file-system'
 import { ContactModel } from '@/domain/models'
@@ -11,7 +12,8 @@ export class FileSystemContactsRepository extends FileSystemAbstractRepository<C
   implements ICheckContactByEmailRepository,
     IAddContactRepository,
     IListContactRepository,
-    ILoadContactByIdRepository {
+    ILoadContactByIdRepository,
+    ISaveContactRepository {
   constructor () {
     super({ filename: FileSystemContactsRepository.filename })
   }
@@ -38,6 +40,17 @@ export class FileSystemContactsRepository extends FileSystemAbstractRepository<C
 
   async loadById (params: ILoadContactByIdRepository.Params): Promise<ILoadContactByIdRepository.Result> {
     const contact = await this.repository.findById(params.id)
+    if (!contact) return null
+    return contact
+  }
+
+  async save (params: ISaveContactRepository.Params): Promise<ISaveContactRepository.Result> {
+    const contact = await this.repository.updateById(params.contactId, {
+      name: params.name,
+      email: params.email,
+      phone: params.phone,
+      address: params.address
+    })
     if (!contact) return null
     return contact
   }
