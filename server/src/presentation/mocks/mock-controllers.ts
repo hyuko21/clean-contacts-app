@@ -3,6 +3,7 @@ import {
   AddContactController,
   SaveContactController
 } from '@/presentation/controllers'
+import { DeleteContactByIdController } from '../controllers/delete-contact-by-id.controller'
 
 export const mockAddContactRequest = (): AddContactController.Request => ({
   name: faker.name.findName(),
@@ -27,4 +28,8 @@ export const mockSaveContactRequest = (): SaveContactController.Request => ({
     city: faker.address.cityName(),
     state: faker.address.stateAbbr()
   }
+})
+
+export const mockDeleteContactByIdRequest = (): DeleteContactByIdController.Request => ({
+  contactId: faker.datatype.uuid()
 })

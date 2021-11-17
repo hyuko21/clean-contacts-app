@@ -1,6 +1,7 @@
 import faker from 'faker'
 import {
   IAddContactUseCase,
+  IDeleteContactByIdUseCase,
   IListContactUseCase,
   ILoadContactByIdUseCase,
   ISaveContactUseCase
@@ -45,6 +46,16 @@ export class LoadContactByIdUseCase implements ILoadContactByIdUseCase {
   }
 }
 
+export class DeleteContactByIdUseCaseSpy implements IDeleteContactByIdUseCase {
+  params?: IDeleteContactByIdUseCase.Params
+  result = true
+
+  async execute (params: IDeleteContactByIdUseCase.Params): Promise<IDeleteContactByIdUseCase.Result> {
+    this.params = params
+    return this.result
+  }
+}
+
 export const mockAddContactUseCaseParams = (): IAddContactUseCase.Params => ({
   name: faker.name.findName(),
   email: faker.internet.email(),
@@ -71,5 +82,9 @@ export const mockSaveContactUseCaseParams = (): ISaveContactUseCase.Params => ({
 })
 
 export const mockLoadContactByIdUseCaseParams = (): ILoadContactByIdUseCase.Params => ({
+  id: faker.datatype.uuid()
+})
+
+export const mockDeleteContactByIdUseCaseParams = (): IDeleteContactByIdUseCase.Params => ({
   id: faker.datatype.uuid()
 })
