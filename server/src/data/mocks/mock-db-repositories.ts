@@ -1,6 +1,7 @@
 import {
   IAddContactRepository,
   ICheckContactByEmailRepository,
+  IDeleteContactByIdRepository,
   IListContactRepository,
   ILoadContactByIdRepository,
   ISaveContactRepository
@@ -50,6 +51,16 @@ export class LoadContactByIdRepositorySpy implements ILoadContactByIdRepository 
   result: ILoadContactByIdRepository.Result = mockContactModel()
 
   async loadById (params: ILoadContactByIdRepository.Params): Promise<ILoadContactByIdRepository.Result> {
+    this.params = params
+    return this.result
+  }
+}
+
+export class DeleteContactByIdRepositorySpy implements IDeleteContactByIdRepository {
+  params?: IDeleteContactByIdRepository.Params
+  result = true
+
+  async deleteById (params: IDeleteContactByIdRepository.Params): Promise<IDeleteContactByIdRepository.Result> {
     this.params = params
     return this.result
   }
