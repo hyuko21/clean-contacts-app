@@ -4,7 +4,7 @@ import request from 'supertest'
 import * as testDb from '@/test-helpers/db'
 import * as testApp from '@/test-helpers/app'
 import setupContactsRoutes from './contacts.routes'
-import { mockAddOneContact } from '@/infra/db/file-system/test-helpers/fs-contacts'
+import { mockAddManyContact, mockAddOneContact } from '@/infra/db/file-system/test-helpers/fs-contacts'
 import { FileSystemContactsRepository } from '@/infra/db/file-system'
 import { mockAddContactRequest } from '@/presentation/mocks/mock-controllers'
 
@@ -146,6 +146,32 @@ describe('Contacts Routes', () => {
 
     it('should return 200 with `success` as true', async () => {
       await requestTest.expect(200, { success: true })
+    })
+  })
+
+  describe('GET /', () => {
+    const apiPath = `${basePath}/`
+
+    beforeEach(() => {
+      requestTest = agentTest.get(apiPath)
+    })
+
+    it('should return 200 with `success` as true and result empty if no contacts exists', async () => {
+      await requestTest.expect(200, {
+        success: true,
+        result: []
+      })
+    })
+
+    it('should return 200 with `success` as true and result with correct data', async () => {
+      const existingContacts = await mockAddManyContact()
+      await requestTest.expect(200)
+        .expect(({ body }) => {
+          expect(body).toEqual({
+            success: true,
+            result: expect.arrayContaining(existingContacts)
+          })
+        })
     })
   })
 })
