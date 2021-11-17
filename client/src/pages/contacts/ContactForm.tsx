@@ -3,7 +3,7 @@ import { CountrySelect, StateProvinceInput } from '../../helpers'
 import { Loading } from '../../components'
 import { useContact } from '../../hooks/use-contact'
 
-export function AddContactPage() {
+export function ContactFormPage() {
   const { contact, setContact, addContact, isLoading } = useContact()
 
   const onChangeField = (e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
