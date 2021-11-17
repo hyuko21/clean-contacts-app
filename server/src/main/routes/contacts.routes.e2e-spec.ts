@@ -60,6 +60,12 @@ describe('Contacts Routes', () => {
           .expect(200, { success: false, error: '"name" is not allowed to be empty' })
       })
 
+      it('if contact "name" is invalid', async () => {
+        requestBody.name = faker.datatype.number()
+        await requestTest.send(requestBody)
+          .expect(200, { success: false, error: '"name" must be a string' })
+      })
+
       it('if contact "email" is missing', async () => {
         requestBody.email = undefined
         await requestTest.send(requestBody)
@@ -90,6 +96,12 @@ describe('Contacts Routes', () => {
           .expect(200, { success: false, error: '"phone" is not allowed to be empty' })
       })
 
+      it('if contact "phone" is invalid', async () => {
+        requestBody.phone = faker.datatype.number()
+        await requestTest.send(requestBody)
+          .expect(200, { success: false, error: '"phone" must be a string' })
+      })
+
       it('if contact "address.houseNumber" is missing', async () => {
         requestBody.address.houseNumber = undefined
         await requestTest.send(requestBody)
@@ -114,6 +126,12 @@ describe('Contacts Routes', () => {
           .expect(200, { success: false, error: '"address.streetName" is not allowed to be empty' })
       })
 
+      it('if contact "address.streetName" is invalid', async () => {
+        requestBody.address.streetName = faker.datatype.number()
+        await requestTest.send(requestBody)
+          .expect(200, { success: false, error: '"address.streetName" must be a string' })
+      })
+
       it('if contact "address.city" is missing', async () => {
         requestBody.address.city = undefined
         await requestTest.send(requestBody)
@@ -126,6 +144,12 @@ describe('Contacts Routes', () => {
           .expect(200, { success: false, error: '"address.city" is not allowed to be empty' })
       })
 
+      it('if contact "address.city" is invalid', async () => {
+        requestBody.address.city = faker.datatype.number()
+        await requestTest.send(requestBody)
+          .expect(200, { success: false, error: '"address.city" must be a string' })
+      })
+
       it('if contact "address.state" is missing', async () => {
         requestBody.address.state = undefined
         await requestTest.send(requestBody)
@@ -136,6 +160,12 @@ describe('Contacts Routes', () => {
         requestBody.address.state = ''
         await requestTest.send(requestBody)
           .expect(200, { success: false, error: '"address.state" is not allowed to be empty' })
+      })
+
+      it('if contact "address.state" is invalid', async () => {
+        requestBody.address.state = faker.datatype.number()
+        await requestTest.send(requestBody)
+          .expect(200, { success: false, error: '"address.state" must be a string' })
       })
 
       it('if contact has unknown property', async () => {
@@ -241,12 +271,6 @@ describe('Contacts Routes', () => {
           requestBody.phone = faker.datatype.number()
           await requestTest.send(requestBody)
             .expect(200, { success: false, error: '"phone" must be a string' })
-        })
-
-        it('if contact "address" is empty', async () => {
-          requestBody.address = {}
-          await requestTest.send(requestBody)
-            .expect(200, { success: false, error: '"address" contains an invalid value' })
         })
 
         it('if contact "address.houseNumber" is invalid', async () => {

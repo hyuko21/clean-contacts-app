@@ -19,7 +19,7 @@ export const SaveContactValidation = celebrate({
     name: Joi.string(),
     email: Joi.string().email(),
     phone: Joi.string(),
-    address: Joi.object().not({}).keys({
+    address: Joi.object().keys({
       houseNumber: Joi.number(),
       streetName: Joi.string(),
       city: Joi.string(),
