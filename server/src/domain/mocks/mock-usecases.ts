@@ -1,5 +1,6 @@
 import faker from 'faker'
-import { IAddContactUseCase } from '@/domain/usecases'
+import { IAddContactUseCase, IListContactUseCase } from '@/domain/usecases'
+import { mockManyContactModel } from './mock-models'
 
 export class AddContactUseCaseSpy implements IAddContactUseCase {
   params?: IAddContactUseCase.Params
@@ -7,6 +8,14 @@ export class AddContactUseCaseSpy implements IAddContactUseCase {
 
   async execute (params: IAddContactUseCase.Params): Promise<IAddContactUseCase.Result> {
     this.params = params
+    return this.result
+  }
+}
+
+export class ListContactUseCaseSpy implements IListContactUseCase {
+  result = mockManyContactModel()
+
+  async execute (): Promise<IListContactUseCase.Result> {
     return this.result
   }
 }

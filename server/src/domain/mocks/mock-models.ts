@@ -1,6 +1,7 @@
 import faker from 'faker'
 import { ContactModel } from '@/domain/models'
 import { mockAbstractModel } from '@/common/models/mocks/mock-models'
+import { fakeMany } from '@/test-helpers/utils'
 
 export const mockContactModel = (): ContactModel => ({
   name: faker.name.findName(),
@@ -14,3 +15,5 @@ export const mockContactModel = (): ContactModel => ({
   },
   ...mockAbstractModel()
 })
+
+export const mockManyContactModel = () => fakeMany(mockContactModel)
