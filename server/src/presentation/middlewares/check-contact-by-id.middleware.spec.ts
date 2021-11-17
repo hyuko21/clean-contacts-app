@@ -1,5 +1,5 @@
 import { LoadContactByIdUseCaseSpy } from '@/domain/mocks/mock-usecases'
-import { ok } from '@/presentation/helpers'
+import { notFound, ok } from '@/presentation/helpers'
 import { mockCheckContactByIdRequest } from '@/presentation/mocks/mock-middlewares'
 import { CheckContactByIdMiddleware } from './check-contact-by-id.middleware'
 
@@ -31,13 +31,13 @@ describe('CheckContactById Middleware', () => {
       expect(loadContactByIdUseCase.params).toEqual({ id: request.contactId })
     })
 
-    it('should return `success` as false with error if execute() returns falsy', async () => {
+    it('should return 404 with error if execute() returns falsy', async () => {
       const { sut, loadContactByIdUseCase } = sutTypes
       loadContactByIdUseCase.result = null
 
       const result = await sut.handle(mockCheckContactByIdRequest())
 
-      expect(result).toEqual(ok({ success: false, error: 'Contact not found' }))
+      expect(result).toEqual(notFound('Contact'))
     })
   })
 

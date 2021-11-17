@@ -1,6 +1,6 @@
 import { ILoadContactByIdUseCase } from '@/domain/usecases'
 import { HttpResponse, IMiddleware } from '@/presentation/protocols'
-import { ok, makeAppResponse } from '@/presentation/helpers'
+import { ok, notFound } from '@/presentation/helpers'
 
 export class CheckContactByIdMiddleware implements IMiddleware {
   constructor (private readonly loadContactByIdUseCase: ILoadContactByIdUseCase) {}
@@ -8,7 +8,7 @@ export class CheckContactByIdMiddleware implements IMiddleware {
   async handle (request: CheckContactByIdMiddleware.Request): Promise<HttpResponse> {
     const contact = await this.loadContactByIdUseCase.execute({ id: request.contactId })
     if (!contact) {
-      return ok(makeAppResponse({ error: 'Contact not found' }))
+      return notFound('Contact')
     }
     return ok({ contactId: contact.id })
   }
