@@ -102,6 +102,32 @@ describe('Contacts FileSystem Repository', () => {
       expect(result).toEqual(randomContact)
     })
 
+    it('should only update desired params', async () => {
+      const existingContacts = await mockAddManyContact()
+      const randomContact = faker.random.arrayElement(existingContacts)
+
+      const saveContactUseCaseParams = mockSaveContactUseCaseParams()
+      const result = await sut.save({
+        email: saveContactUseCaseParams.email,
+        phone: saveContactUseCaseParams.phone,
+        address: {
+          city: saveContactUseCaseParams.address?.city
+        },
+        contactId: randomContact.id
+      })
+
+      expect(result).toEqual({
+        ...randomContact,
+        email: saveContactUseCaseParams.email,
+        phone: saveContactUseCaseParams.phone,
+        address: {
+          ...randomContact.address,
+          city: saveContactUseCaseParams.address?.city
+        },
+        contactId: undefined
+      })
+    })
+
     it('should update and return contact with correct data on success', async () => {
       const existingContacts = await mockAddManyContact()
       const randomContact = faker.random.arrayElement(existingContacts)
