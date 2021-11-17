@@ -1,11 +1,13 @@
 import {
   DbAddContactUseCase,
+  DbDeleteContactByIdUseCase,
   DbListContactUseCase,
   DbLoadContactByIdUseCase,
   DbSaveContactUseCase
 } from '@/data/usecases'
 import {
   IAddContactUseCase,
+  IDeleteContactByIdUseCase,
   IListContactUseCase,
   ILoadContactByIdUseCase,
   ISaveContactUseCase
@@ -33,4 +35,9 @@ export const makeDbSaveContactUseCase = (): ISaveContactUseCase => {
 export const makeDbLoadContactByIdUseCase = (): ILoadContactByIdUseCase => {
   const fileSystemContactsRepository = new FileSystemContactsRepository()
   return new DbLoadContactByIdUseCase(fileSystemContactsRepository)
+}
+
+export const makeDbDeleteContactByIdUseCase = (): IDeleteContactByIdUseCase => {
+  const fileSystemContactsRepository = new FileSystemContactsRepository()
+  return new DbDeleteContactByIdUseCase(fileSystemContactsRepository)
 }
