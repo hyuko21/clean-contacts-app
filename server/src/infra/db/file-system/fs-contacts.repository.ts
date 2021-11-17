@@ -45,12 +45,10 @@ export class FileSystemContactsRepository extends FileSystemAbstractRepository<C
   }
 
   async save (params: ISaveContactRepository.Params): Promise<ISaveContactRepository.Result> {
-    const contact = await this.repository.updateById(params.contactId, {
-      name: params.name,
-      email: params.email,
-      phone: params.phone,
-      address: params.address
-    })
+    const contact = await this.repository.updateById(
+      params.contactId,
+      { ...params, contactId: undefined }
+    )
     if (!contact) return null
     return contact
   }
