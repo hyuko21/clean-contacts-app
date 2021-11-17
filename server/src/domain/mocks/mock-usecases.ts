@@ -58,6 +58,7 @@ export const mockAddContactUseCaseParams = (): IAddContactUseCase.Params => ({
 })
 
 export const mockSaveContactUseCaseParams = (): ISaveContactUseCase.Params => ({
+  contactId: faker.datatype.uuid(),
   name: faker.name.findName(),
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber(),

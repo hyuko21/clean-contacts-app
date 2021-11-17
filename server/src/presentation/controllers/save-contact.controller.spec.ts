@@ -50,12 +50,7 @@ describe('SaveContact Controller', () => {
 
       await sut.handle(request)
 
-      expect(saveContactUseCase.params).toEqual({
-        name: request.name,
-        email: request.email,
-        phone: request.phone,
-        address: request.address
-      })
+      expect(saveContactUseCase.params).toEqual(request)
     })
   })
 

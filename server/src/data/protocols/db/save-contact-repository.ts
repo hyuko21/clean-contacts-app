@@ -6,6 +6,7 @@ export interface ISaveContactRepository {
 
 export namespace ISaveContactRepository {
   export type Params = {
+    contactId: string
     name?: string
     email?: string
     phone?: string
@@ -16,5 +17,5 @@ export namespace ISaveContactRepository {
       state?: string
     }
   }
-  export type Result = ContactModel
+  export type Result = ContactModel | null
 }

@@ -6,6 +6,7 @@ export interface ISaveContactUseCase {
 
 export namespace ISaveContactUseCase {
   export type Params = {
+    contactId: string
     name?: string
     email?: string
     phone?: string
@@ -16,5 +17,5 @@ export namespace ISaveContactUseCase {
       state?: string
     }
   }
-  export type Result = ContactModel
+  export type Result = ContactModel | null
 }

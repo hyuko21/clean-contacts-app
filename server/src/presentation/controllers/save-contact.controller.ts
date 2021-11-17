@@ -16,12 +16,7 @@ export class SaveContactController implements IController {
     if (!contact) {
       return ok(makeAppResponse({ error: 'Contact not found' }))
     }
-    contact = await this.saveContactUseCase.execute({
-      name: request.name,
-      email: request.email,
-      phone: request.phone,
-      address: request.address
-    })
+    contact = await this.saveContactUseCase.execute(request)
     const response = makeAppResponse({ result: contact })
     return ok(response)
   }
