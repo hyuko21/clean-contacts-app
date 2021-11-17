@@ -1,4 +1,4 @@
-import { LoadByIdContactUseCaseSpy, SaveContactUseCaseSpy } from '@/domain/mocks/mock-usecases'
+import { LoadContactByIdUseCase, SaveContactUseCaseSpy } from '@/domain/mocks/mock-usecases'
 import { SaveContactController } from './save-contact.controller'
 import { ok } from '@/presentation/helpers'
 import { mockSaveContactRequest } from '@/presentation/mocks/mock-controllers'
@@ -6,14 +6,14 @@ import { mockSaveContactRequest } from '@/presentation/mocks/mock-controllers'
 type SutTypes = {
   sut: SaveContactController
   saveContactUseCase: SaveContactUseCaseSpy
-  loadByIdContactUseCase: LoadByIdContactUseCaseSpy
+  loadContactByIdUseCase: LoadContactByIdUseCase
 }
 
 const makeSut = (): SutTypes => {
   const saveContactUseCase = new SaveContactUseCaseSpy()
-  const loadByIdContactUseCase = new LoadByIdContactUseCaseSpy()
-  const sut = new SaveContactController(saveContactUseCase, loadByIdContactUseCase)
-  return { sut, saveContactUseCase, loadByIdContactUseCase }
+  const loadContactByIdUseCase = new LoadContactByIdUseCase()
+  const sut = new SaveContactController(saveContactUseCase, loadContactByIdUseCase)
+  return { sut, saveContactUseCase, loadContactByIdUseCase }
 }
 
 describe('SaveContact Controller', () => {
@@ -23,19 +23,19 @@ describe('SaveContact Controller', () => {
     sutTypes = makeSut()
   })
 
-  describe('LoadByIdContact UseCase dependency', () => {
+  describe('LoadContactById UseCase dependency', () => {
     it('should call execute() with correct params', async () => {
-      const { sut, loadByIdContactUseCase } = sutTypes
+      const { sut, loadContactByIdUseCase } = sutTypes
       const request = mockSaveContactRequest()
 
       await sut.handle(request)
 
-      expect(loadByIdContactUseCase.params).toEqual({ id: request.contactId })
+      expect(loadContactByIdUseCase.params).toEqual({ id: request.contactId })
     })
 
     it('should return `success` as false with error if execute() returns falsy', async () => {
-      const { sut, loadByIdContactUseCase } = sutTypes
-      loadByIdContactUseCase.result = null
+      const { sut, loadContactByIdUseCase } = sutTypes
+      loadContactByIdUseCase.result = null
 
       const result = await sut.handle(mockSaveContactRequest())
 

@@ -2,7 +2,7 @@ import faker from 'faker'
 import {
   IAddContactUseCase,
   IListContactUseCase,
-  ILoadByIdContactUseCase,
+  ILoadContactByIdUseCase,
   ISaveContactUseCase
 } from '@/domain/usecases'
 import { mockContactModel, mockManyContactModel } from './mock-models'
@@ -35,11 +35,11 @@ export class SaveContactUseCaseSpy implements ISaveContactUseCase {
   }
 }
 
-export class LoadByIdContactUseCaseSpy implements ILoadByIdContactUseCase {
-  params?: ILoadByIdContactUseCase.Params
-  result: ILoadByIdContactUseCase.Result = mockContactModel()
+export class LoadContactByIdUseCase implements ILoadContactByIdUseCase {
+  params?: ILoadContactByIdUseCase.Params
+  result: ILoadContactByIdUseCase.Result = mockContactModel()
 
-  async execute (params: ILoadByIdContactUseCase.Params): Promise<ILoadByIdContactUseCase.Result> {
+  async execute (params: ILoadContactByIdUseCase.Params): Promise<ILoadContactByIdUseCase.Result> {
     this.params = params
     return this.result
   }

@@ -1,5 +1,5 @@
 import {
-  ILoadByIdContactUseCase,
+  ILoadContactByIdUseCase,
   ISaveContactUseCase
 } from '@/domain/usecases'
 import { HttpResponse, IController } from '@/presentation/protocols'
@@ -8,11 +8,11 @@ import { makeAppResponse, ok } from '@/presentation/helpers'
 export class SaveContactController implements IController {
   constructor (
     private readonly saveContactUseCase: ISaveContactUseCase,
-    private readonly loadByIdUseCase: ILoadByIdContactUseCase
+    private readonly loadContactByIdUseCase: ILoadContactByIdUseCase
   ) {}
 
   async handle (request: SaveContactController.Request): Promise<HttpResponse> {
-    let contact = await this.loadByIdUseCase.execute({ id: request.contactId })
+    let contact = await this.loadContactByIdUseCase.execute({ id: request.contactId })
     if (!contact) {
       return ok(makeAppResponse({ error: 'Contact not found' }))
     }
