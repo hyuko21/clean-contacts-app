@@ -45,6 +45,20 @@ class FileSystemAbstractRepositoryFactory<T extends AbstractModel> implements IA
     return item
   }
 
+  async updateById (id: string, data: Omit<T, 'id'>): Promise<T | undefined> {
+    const storedData = await this.find()
+    let updatedItem
+    const newData = storedData.map((item) => {
+      if (item.id === id) {
+        updatedItem = { ...item, ...data }
+        return updatedItem
+      }
+      return item
+    })
+    await this.replace(newData)
+    return updatedItem
+  }
+
   async add (item: Omit<T, 'id'>): Promise<T> {
     const newItem = { ...item, id: cuid() } as T
     const storedData = await this.find()
