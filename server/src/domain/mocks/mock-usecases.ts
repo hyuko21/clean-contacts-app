@@ -1,6 +1,10 @@
 import faker from 'faker'
-import { IAddContactUseCase, IListContactUseCase } from '@/domain/usecases'
-import { mockManyContactModel } from './mock-models'
+import {
+  IAddContactUseCase,
+  IListContactUseCase,
+  ISaveContactUseCase
+} from '@/domain/usecases'
+import { mockContactModel, mockManyContactModel } from './mock-models'
 
 export class AddContactUseCaseSpy implements IAddContactUseCase {
   params?: IAddContactUseCase.Params
@@ -20,7 +24,29 @@ export class ListContactUseCaseSpy implements IListContactUseCase {
   }
 }
 
+export class SaveContactUseCaseSpy implements ISaveContactUseCase {
+  params?: ISaveContactUseCase.Params
+  result = mockContactModel()
+
+  async execute (params: ISaveContactUseCase.Params): Promise<ISaveContactUseCase.Result> {
+    this.params = params
+    return this.result
+  }
+}
+
 export const mockAddContactUseCaseParams = (): IAddContactUseCase.Params => ({
+  name: faker.name.findName(),
+  email: faker.internet.email(),
+  phone: faker.phone.phoneNumber(),
+  address: {
+    houseNumber: faker.datatype.number(),
+    streetName: faker.address.streetName(),
+    city: faker.address.cityName(),
+    state: faker.address.stateAbbr()
+  }
+})
+
+export const mockSaveContactUseCaseParams = (): ISaveContactUseCase.Params => ({
   name: faker.name.findName(),
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber(),
