@@ -78,6 +78,20 @@ class FileSystemAbstractRepositoryFactory<T extends AbstractModel> implements IA
     await this.replace([])
     return true
   }
+
+  async deleteById (id: string): Promise<boolean> {
+    const storedData = await this.find()
+    let itemDeleted = false
+    const newData = storedData.filter((item) => {
+      if (item.id === id) {
+        itemDeleted = true
+        return false
+      }
+      return true
+    })
+    await this.replace(newData)
+    return itemDeleted
+  }
 }
 
 export namespace FileSystemAbstractRepository {

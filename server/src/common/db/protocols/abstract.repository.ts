@@ -13,5 +13,6 @@ export namespace IAbstractRepository {
     add: (item: Omit<T, 'id'>) => Promise<T>
     replace: (data: T[]) => Promise<T[]>
     delete: () => Promise<boolean>
+    deleteById: (id: string) => Promise<boolean>
   }
 }

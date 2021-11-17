@@ -1,6 +1,7 @@
 import {
   IAddContactRepository,
   ICheckContactByEmailRepository,
+  IDeleteContactByIdRepository,
   IListContactRepository,
   ILoadContactByIdRepository,
   ISaveContactRepository
@@ -13,7 +14,8 @@ export class FileSystemContactsRepository extends FileSystemAbstractRepository<C
     IAddContactRepository,
     IListContactRepository,
     ILoadContactByIdRepository,
-    ISaveContactRepository {
+    ISaveContactRepository,
+    IDeleteContactByIdRepository {
   constructor () {
     super({ filename: FileSystemContactsRepository.filename })
   }
@@ -51,6 +53,10 @@ export class FileSystemContactsRepository extends FileSystemAbstractRepository<C
     )
     if (!contact) return null
     return contact
+  }
+
+  async deleteById (params: IDeleteContactByIdRepository.Params): Promise<IDeleteContactByIdRepository.Result> {
+    return this.repository.deleteById(params.id)
   }
 }
 
