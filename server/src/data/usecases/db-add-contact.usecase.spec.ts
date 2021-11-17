@@ -57,12 +57,12 @@ describe('DbAddContact UseCase', () => {
 
         expect(addContactRepository.params).toEqual(params)
       })
+    })
 
-      it('should return same as add() returns', async () => {
-        const { sut, addContactRepository } = sutTypes
-        const result = await sut.execute(mockAddContactUseCaseParams())
-        expect(result).toBe(addContactRepository.result)
-      })
+    it('should return result with correct data on success', async () => {
+      const { sut, addContactRepository } = sutTypes
+      const result = await sut.execute(mockAddContactUseCaseParams())
+      expect(result).toBe(addContactRepository.result)
     })
   })
 })

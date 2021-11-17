@@ -30,7 +30,7 @@ describe('DbListContact UseCase', () => {
     })
   })
 
-  it('should return same as list() returns', async () => {
+  it('should return result with correct data on success', async () => {
     const { sut, listContactRepository } = sutTypes
     const result = await sut.execute()
     expect(result).toBe(listContactRepository.result)
