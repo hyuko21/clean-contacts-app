@@ -66,4 +66,21 @@ describe('Contacts FileSystem Repository', () => {
       expect(result).toEqual(expect.arrayContaining(existingContacts))
     })
   })
+
+  describe('loadById()', () => {
+    it('should return null if no contact exists by id', async () => {
+      const contactId = faker.datatype.uuid()
+      const result = await sut.loadById({ id: contactId })
+      expect(result).toBeNull()
+    })
+
+    it('should return correct contact data on success', async () => {
+      const existingContacts = await mockAddManyContact()
+      const randomContact = faker.random.arrayElement(existingContacts)
+
+      const result = await sut.loadById({ id: randomContact.id })
+
+      expect(result).toEqual(randomContact)
+    })
+  })
 })
