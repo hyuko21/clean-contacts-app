@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Container, Header } from './components'
-import { ContactFormPage } from './pages/contacts'
+import { ContactFormPage, ListContactPage } from './pages/contacts'
 import { ToastContainer } from 'react-toastify'
 
 export function App() {
@@ -10,6 +10,7 @@ export function App() {
       <Container>
         <Routes>
           <Route path='/contacts-form'  element={<ContactFormPage />} />
+          <Route path='/admin' element={<ListContactPage />} />
           <Route path='*' element={<Navigate to='/contacts-form' />} />
         </Routes>
       </Container>

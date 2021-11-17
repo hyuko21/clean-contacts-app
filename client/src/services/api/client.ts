@@ -32,6 +32,10 @@ export class Client {
   post() {
     return api.post(this.baseUrl, this._data);
   }
+
+  get() {
+    return api.get(this.baseUrl)
+  }
 }
 
-export type ApiResponse<T = { success: boolean, error?: string }> = AxiosResponse<T>;
+export type ApiResponse<T = undefined> = AxiosResponse<{ success: boolean, result?: T, error?: string }>;

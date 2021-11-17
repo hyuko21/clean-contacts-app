@@ -4,10 +4,10 @@ import { Loading } from '../../components'
 import { useContact } from '../../hooks/use-contact'
 
 export function ContactFormPage() {
-  const { contact, setContact, addContact, isLoading } = useContact()
+  const { editContact, setEditContact, addContact, isLoading } = useContact()
 
   const onChangeField = (e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
-    setContact({ ...contact, [e.target.name]: e.target.value })
+    setEditContact({ ...editContact, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e: FormEvent) => {
@@ -40,7 +40,7 @@ export function ContactFormPage() {
                         type="text"
                         name="name"
                         required
-                        value={contact.name}
+                        value={editContact.name}
                         onChange={onChangeField}
                         id="name"
                         autoComplete="given-name"
@@ -56,7 +56,7 @@ export function ContactFormPage() {
                         type="text"
                         name="phone"
                         required
-                        value={contact.phone}
+                        value={editContact.phone}
                         onChange={onChangeField}
                         id="phone"
                         autoComplete="phone"
@@ -72,7 +72,7 @@ export function ContactFormPage() {
                         type="email"
                         name="email"
                         required
-                        value={contact.email}
+                        value={editContact.email}
                         onChange={onChangeField}
                         id="email-address"
                         autoComplete="email"
@@ -88,7 +88,7 @@ export function ContactFormPage() {
                         id="country"
                         name="country"
                         required
-                        value={contact.country}
+                        value={editContact.country}
                         onChange={onChangeField}
                         autoComplete="country-name"
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -100,12 +100,12 @@ export function ContactFormPage() {
                         State / Province
                       </label>
                       <StateProvinceInput
-                        countrycode={contact.country}
-                        disabled={!contact.country}
+                        countrycode={editContact.country}
+                        disabled={!editContact.country}
                         type="text"
                         name="state"
                         required
-                        value={contact.state}
+                        value={editContact.state}
                         onChange={onChangeField}
                         id="region"
                         autoComplete="address-level1"
@@ -118,11 +118,11 @@ export function ContactFormPage() {
                         City
                       </label>
                       <input
-                        disabled={!contact.state}
+                        disabled={!editContact.state}
                         type="text"
                         name="city"
                         required
-                        value={contact.city}
+                        value={editContact.city}
                         onChange={onChangeField}
                         id="city"
                         autoComplete="address-level2"
@@ -138,7 +138,7 @@ export function ContactFormPage() {
                         type="number"
                         name="houseNumber"
                         required
-                        value={contact.houseNumber}
+                        value={editContact.houseNumber}
                         onChange={onChangeField}
                         id="house-number"
                         autoComplete="house-number"
@@ -154,7 +154,7 @@ export function ContactFormPage() {
                         type="text"
                         name="streetName"
                         required
-                        value={contact.streetName}
+                        value={editContact.streetName}
                         onChange={onChangeField}
                         id="street-address"
                         autoComplete="street-address"

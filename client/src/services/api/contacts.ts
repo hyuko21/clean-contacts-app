@@ -20,6 +20,11 @@ function addContact(
   return Client.getInstance(resourceName).data(payload).post();
 }
 
+function listContact(): Promise<ApiResponse<Contact[]>> {
+  return Client.getInstance(resourceName).get()
+}
+
 export const ContactsService = {
-  addContact
+  addContact,
+  listContact
 };

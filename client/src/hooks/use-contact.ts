@@ -3,26 +3,26 @@ import { toast } from 'react-toastify'
 import { ContactsService } from '../services/api/contacts'
 
 export const useContact = () => {
-  const [contact, setContact] = useState<Contact>({} as Contact)
+  const [editContact, setEditContact] = useState<EditContact>({} as EditContact)
   const [isLoading, setIsLoading] = useState(false)
 
   const addContact = async () => {
     setIsLoading(true)
     try {
       const { data } = await ContactsService.addContact({
-        name: contact.name,
-        email: contact.email,
-        phone: contact.phone,
+        name: editContact.name,
+        email: editContact.email,
+        phone: editContact.phone,
         address: {
-          houseNumber: contact.houseNumber,
-          streetName: contact.streetName,
-          city: contact.city,
-          state: contact.state
+          houseNumber: editContact.houseNumber,
+          streetName: editContact.streetName,
+          city: editContact.city,
+          state: editContact.state
         }
       })
 
       if (data.success) {
-        setContact({} as Contact)
+        setEditContact({} as EditContact)
         toast.success('Contact info saved')
       } else {
         toast.error(data.error)
@@ -34,5 +34,14 @@ export const useContact = () => {
     }
   }
 
-  return { contact, setContact, addContact, isLoading }
+  const listContact = () => ContactsService.listContact()
+
+  return {
+    editContact,
+    setEditContact,
+    isLoading,
+
+    addContact,
+    listContact
+  }
 }
