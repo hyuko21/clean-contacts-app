@@ -1,45 +1,18 @@
-import { FormEvent, useState } from 'react'
-import { toast } from 'react-toastify'
+import { FormEvent } from 'react'
 import { CountrySelect, StateProvinceInput } from '../../helpers'
-import { ContactsService } from '../../services/api/contacts'
 import { Loading } from '../../components'
+import { useContact } from '../../hooks/use-contact'
 
 export function AddContactPage() {
-  const [contact, setContact] = useState<Contact>({} as Contact)
-  const [isLoading, setIsLoading] = useState(false)
+  const { contact, setContact, addContact, isLoading } = useContact()
 
-  const updateContact = (e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
+  const onChangeField = (e: React.ChangeEvent<HTMLInputElement & HTMLSelectElement>) => {
     setContact({ ...contact, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-
-    setIsLoading(true)
-    try {
-      const { data } = await ContactsService.addContact({
-        name: contact.name,
-        email: contact.email,
-        phone: contact.phone,
-        address: {
-          houseNumber: contact.houseNumber,
-          streetName: contact.streetName,
-          city: contact.city,
-          state: contact.state
-        }
-      })
-
-      if (data.success) {
-        setContact({} as Contact)
-        toast.success('Contact info saved')
-      } else {
-        toast.error(data.error)
-      }
-    } catch (error) {
-      toast.error('Something went wrong. Please try again later')
-    } finally {
-      setIsLoading(false)
-    }
+    await addContact()
   }
 
   return (
@@ -68,7 +41,7 @@ export function AddContactPage() {
                         name="name"
                         required
                         value={contact.name}
-                        onChange={updateContact}
+                        onChange={onChangeField}
                         id="name"
                         autoComplete="given-name"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -84,7 +57,7 @@ export function AddContactPage() {
                         name="phone"
                         required
                         value={contact.phone}
-                        onChange={updateContact}
+                        onChange={onChangeField}
                         id="phone"
                         autoComplete="phone"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -100,7 +73,7 @@ export function AddContactPage() {
                         name="email"
                         required
                         value={contact.email}
-                        onChange={updateContact}
+                        onChange={onChangeField}
                         id="email-address"
                         autoComplete="email"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -116,7 +89,7 @@ export function AddContactPage() {
                         name="country"
                         required
                         value={contact.country}
-                        onChange={updateContact}
+                        onChange={onChangeField}
                         autoComplete="country-name"
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       />
@@ -133,7 +106,7 @@ export function AddContactPage() {
                         name="state"
                         required
                         value={contact.state}
-                        onChange={updateContact}
+                        onChange={onChangeField}
                         id="region"
                         autoComplete="address-level1"
                         className="disabled:bg-gray-300 disabled:cursor-not-allowed mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -150,7 +123,7 @@ export function AddContactPage() {
                         name="city"
                         required
                         value={contact.city}
-                        onChange={updateContact}
+                        onChange={onChangeField}
                         id="city"
                         autoComplete="address-level2"
                         className="disabled:bg-gray-300 disabled:cursor-not-allowed mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -166,7 +139,7 @@ export function AddContactPage() {
                         name="houseNumber"
                         required
                         value={contact.houseNumber}
-                        onChange={updateContact}
+                        onChange={onChangeField}
                         id="house-number"
                         autoComplete="house-number"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -182,7 +155,7 @@ export function AddContactPage() {
                         name="streetName"
                         required
                         value={contact.streetName}
-                        onChange={updateContact}
+                        onChange={onChangeField}
                         id="street-address"
                         autoComplete="street-address"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
