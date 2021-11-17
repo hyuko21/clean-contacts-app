@@ -68,3 +68,7 @@ export const mockSaveContactUseCaseParams = (): ISaveContactUseCase.Params => ({
     state: faker.address.stateAbbr()
   }
 })
+
+export const mockLoadContactByIdUseCaseParams = (): ILoadContactByIdUseCase.Params => ({
+  id: faker.datatype.uuid()
+})

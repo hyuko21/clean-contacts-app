@@ -2,6 +2,7 @@ import {
   IAddContactRepository,
   ICheckContactByEmailRepository,
   IListContactRepository,
+  ILoadContactByIdRepository,
   ISaveContactRepository
 } from '@/data/protocols/db'
 import { mockContactModel, mockManyContactModel } from '@/domain/mocks/mock-models'
@@ -39,6 +40,16 @@ export class SaveContactRepositorySpy implements ISaveContactRepository {
   result = mockContactModel()
 
   async save (params: ISaveContactRepository.Params): Promise<ISaveContactRepository.Result> {
+    this.params = params
+    return this.result
+  }
+}
+
+export class LoadContactByIdRepositorySpy implements ILoadContactByIdRepository {
+  params?: ILoadContactByIdRepository.Params
+  result: ILoadContactByIdRepository.Result = mockContactModel()
+
+  async loadById (params: ILoadContactByIdRepository.Params): Promise<ILoadContactByIdRepository.Result> {
     this.params = params
     return this.result
   }
