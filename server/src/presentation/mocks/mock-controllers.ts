@@ -17,6 +17,7 @@ export const mockAddContactRequest = (): AddContactController.Request => ({
 })
 
 export const mockSaveContactRequest = (): SaveContactController.Request => ({
+  contactId: faker.datatype.uuid(),
   name: faker.name.findName(),
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber(),
