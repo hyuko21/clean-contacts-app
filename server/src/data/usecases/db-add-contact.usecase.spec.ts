@@ -1,7 +1,6 @@
-import faker from 'faker'
 import { AddContactRepositorySpy, CheckContactByEmailRepositorySpy } from '@/data/mocks/mock-db-repositories'
-import { IAddContactUseCase } from '@/domain/usecases'
 import { DbAddContactUseCase } from './db-add-contact.usecase'
+import { mockAddContactUseCaseParams } from '@/domain/mocks/mock-usecases'
 
 type SutTypes = {
   sut: DbAddContactUseCase
@@ -16,18 +15,6 @@ const makeSut = (): SutTypes => {
   return { sut, checkContactByEmailRepository, addContactRepository }
 }
 
-const mockParams = (): IAddContactUseCase.Params => ({
-  name: faker.name.findName(),
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
-  address: {
-    houseNumber: faker.datatype.number(),
-    streetName: faker.address.streetName(),
-    city: faker.address.cityName(),
-    state: faker.address.stateAbbr()
-  }
-})
-
 describe('DbAddContact UseCase', () => {
   let sutTypes: SutTypes
 
@@ -38,7 +25,7 @@ describe('DbAddContact UseCase', () => {
   describe('CheckContactByEmail Repository dependency', () => {
     it('should call checkByEmail() with correct params', async () => {
       const { sut, checkContactByEmailRepository } = sutTypes
-      const params = mockParams()
+      const params = mockAddContactUseCaseParams()
 
       await sut.execute(params)
 
@@ -49,7 +36,7 @@ describe('DbAddContact UseCase', () => {
       const { sut, checkContactByEmailRepository } = sutTypes
       checkContactByEmailRepository.result = false
 
-      const result = await sut.execute(mockParams())
+      const result = await sut.execute(mockAddContactUseCaseParams())
 
       expect(result).toBe(true)
     })
@@ -64,7 +51,7 @@ describe('DbAddContact UseCase', () => {
     describe('AddContact Repository dependency', () => {
       it('should call add() with correct params', async () => {
         const { sut, addContactRepository } = sutTypes
-        const params = mockParams()
+        const params = mockAddContactUseCaseParams()
 
         await sut.execute(params)
 
@@ -73,7 +60,7 @@ describe('DbAddContact UseCase', () => {
 
       it('should return same as add() returns', async () => {
         const { sut, addContactRepository } = sutTypes
-        const result = await sut.execute(mockParams())
+        const result = await sut.execute(mockAddContactUseCaseParams())
         expect(result).toBe(addContactRepository.result)
       })
     })
