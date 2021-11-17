@@ -1,6 +1,17 @@
-import { AddContactController } from '@/presentation/controllers/add-contact.controller'
-import { makeDbAddContactUseCase } from '@/main/factories/usecases/contacts-usecases.factory'
+import {
+  AddContactController,
+  ListContactController
+} from '@/presentation/controllers'
+import {
+  makeDbAddContactUseCase,
+  makeDbListContactUseCase
+} from '@/main/factories/usecases/contacts-usecases.factory'
+import { IController } from '@/presentation/protocols'
 
-export const makeAddContactsController = (): AddContactController => {
+export const makeAddContactController = (): IController => {
   return new AddContactController(makeDbAddContactUseCase())
+}
+
+export const makeListContactController = (): IController => {
+  return new ListContactController(makeDbListContactUseCase())
 }

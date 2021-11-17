@@ -1,8 +1,13 @@
 import { adaptExpressRoute } from '@/main/adapters'
-import { makeAddContactsController } from '@/main/factories/controllers/contacts-controllers.factory'
+import {
+  makeAddContactController,
+  makeListContactController
+} from '@/main/factories/controllers/contacts-controllers.factory'
 import { Router } from 'express'
 import { AddContactValidation } from './validations/contacts.validation'
 
 export default (router: Router): void => {
-  router.post('/contacts', AddContactValidation, adaptExpressRoute(makeAddContactsController()))
+  router.route('/contacts')
+    .post(AddContactValidation, adaptExpressRoute(makeAddContactController()))
+    .get(adaptExpressRoute(makeListContactController()))
 }

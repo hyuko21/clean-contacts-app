@@ -1,5 +1,5 @@
-import { DbAddContactUseCase } from '@/data/usecases'
-import { IAddContactUseCase } from '@/domain/usecases'
+import { DbAddContactUseCase, DbListContactUseCase } from '@/data/usecases'
+import { IAddContactUseCase, IListContactUseCase } from '@/domain/usecases'
 import { FileSystemContactsRepository } from '@/infra/db/file-system'
 
 export const makeDbAddContactUseCase = (): IAddContactUseCase => {
@@ -8,4 +8,9 @@ export const makeDbAddContactUseCase = (): IAddContactUseCase => {
     fileSystemContactsRepository,
     fileSystemContactsRepository
   )
+}
+
+export const makeDbListContactUseCase = (): IListContactUseCase => {
+  const fileSystemContactsRepository = new FileSystemContactsRepository()
+  return new DbListContactUseCase(fileSystemContactsRepository)
 }
