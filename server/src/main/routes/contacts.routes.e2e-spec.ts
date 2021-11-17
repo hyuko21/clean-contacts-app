@@ -335,4 +335,30 @@ describe('Contacts Routes', () => {
       })
     })
   })
+
+  describe('DELETE /:contactId', () => {
+    const apiPath = (contactId = faker.datatype.uuid()) => `${basePath}/${contactId}`
+
+    beforeEach(() => {
+      requestTest = agentTest.delete(apiPath())
+    })
+
+    it('should return 404 if contact not found by id', async () => {
+      await requestTest.expect(404, { error: 'Contact not found' })
+    })
+
+    describe('when contact exists', () => {
+      let existingContacts: ContactModel[]
+
+      beforeEach(async () => {
+        existingContacts = await mockAddManyContact()
+      })
+
+      it('should return 200 with `success` as true and delete contact on success', async () => {
+        const contactToDelete = faker.random.arrayElement(existingContacts)
+        await agentTest.delete(apiPath(contactToDelete.id))
+          .expect(200, { success: true })
+      })
+    })
+  })
 })
