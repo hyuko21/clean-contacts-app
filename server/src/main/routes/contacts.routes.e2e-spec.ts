@@ -6,7 +6,8 @@ import * as testApp from '@/test-helpers/app'
 import setupContactsRoutes from './contacts.routes'
 import { mockAddManyContact, mockAddOneContact } from '@/infra/db/file-system/test-helpers/fs-contacts'
 import { FileSystemContactsRepository } from '@/infra/db/file-system'
-import { mockAddContactRequest } from '@/presentation/mocks/mock-controllers'
+import { mockAddContactRequest, mockSaveContactRequest } from '@/presentation/mocks/mock-controllers'
+import { ContactModel } from '@/domain/models'
 
 describe('Contacts Routes', () => {
   const contactsRepository = new FileSystemContactsRepository()
@@ -172,6 +173,145 @@ describe('Contacts Routes', () => {
             result: expect.arrayContaining(existingContacts)
           })
         })
+    })
+  })
+
+  describe('PATCH /:contactId', () => {
+    const apiPath = (contactId = faker.datatype.uuid()) => `${basePath}/${contactId}`
+
+    beforeEach(() => {
+      requestTest = agentTest.patch(apiPath())
+    })
+
+    it('should return 200 with `success` as false if contact not found by id', async () => {
+      await requestTest.expect(200, {
+        success: false,
+        error: 'Contact not found'
+      })
+    })
+
+    describe('when contact exists', () => {
+      let contact: ContactModel
+      let requestBody: any
+
+      beforeEach(async () => {
+        contact = await mockAddOneContact()
+        requestBody = {
+          ...mockSaveContactRequest(),
+          contactId: undefined
+        }
+        requestTest = agentTest.patch(apiPath(contact.id))
+      })
+
+      it('should return 200 with `success` as true even with empty body', async () => {
+        requestBody = {}
+        await requestTest.send(requestBody)
+          .expect(200, { success: true, result: contact })
+      })
+
+      describe('when contact is invalid should return 200 with `success` as false', () => {
+        it('if contact "name" is empty', async () => {
+          requestBody.name = ''
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"name" is not allowed to be empty' })
+        })
+
+        it('if contact "name" is invalid', async () => {
+          requestBody.name = faker.datatype.number()
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"name" must be a string' })
+        })
+
+        it('if contact "email" is empty', async () => {
+          requestBody.email = ''
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"email" is not allowed to be empty' })
+        })
+
+        it('if contact "email" is invalid', async () => {
+          requestBody.email = faker.random.word()
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"email" must be a valid email' })
+        })
+
+        it('if contact "phone" is empty', async () => {
+          requestBody.phone = ''
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"phone" is not allowed to be empty' })
+        })
+
+        it('if contact "phone" is invalid', async () => {
+          requestBody.phone = faker.datatype.number()
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"phone" must be a string' })
+        })
+
+        it('if contact "address" is empty', async () => {
+          requestBody.address = {}
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"address" contains an invalid value' })
+        })
+
+        it('if contact "address.houseNumber" is invalid', async () => {
+          requestBody.address.houseNumber = ''
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"address.houseNumber" must be a number' })
+        })
+
+        it('if contact "address.streetName" is empty', async () => {
+          requestBody.address.streetName = ''
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"address.streetName" is not allowed to be empty' })
+        })
+
+        it('if contact "address.streetName" is invalid', async () => {
+          requestBody.address.streetName = faker.datatype.number()
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"address.streetName" must be a string' })
+        })
+
+        it('if contact "address.city" is empty', async () => {
+          requestBody.address.city = ''
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"address.city" is not allowed to be empty' })
+        })
+
+        it('if contact "address.city" is invalid', async () => {
+          requestBody.address.city = faker.datatype.number()
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"address.city" must be a string' })
+        })
+
+        it('if contact "address.state" is empty', async () => {
+          requestBody.address.state = ''
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"address.state" is not allowed to be empty' })
+        })
+
+        it('if contact "address.state" is invalid', async () => {
+          requestBody.address.state = faker.datatype.number()
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"address.state" must be a string' })
+        })
+
+        it('if contact has unknown property', async () => {
+          requestBody.unknown = faker.random.word()
+          await requestTest.send(requestBody)
+            .expect(200, { success: false, error: '"unknown" is not allowed' })
+        })
+      })
+
+      it('should return 200 with `success` as true and `result` with correct data', async () => {
+        await requestTest.send(requestBody).expect(200).expect(({ body }) => {
+          expect(body).toEqual({
+            success: true,
+            result: {
+              ...contact,
+              ...requestBody
+            }
+          })
+        })
+      })
     })
   })
 })
