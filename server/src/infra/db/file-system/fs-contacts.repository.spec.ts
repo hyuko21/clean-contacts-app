@@ -93,6 +93,15 @@ describe('Contacts FileSystem Repository', () => {
       expect(result).toBeNull()
     })
 
+    it('should not update if params is empty', async () => {
+      const existingContacts = await mockAddManyContact()
+      const randomContact = faker.random.arrayElement(existingContacts)
+
+      const result = await sut.save({ contactId: randomContact.id })
+
+      expect(result).toEqual(randomContact)
+    })
+
     it('should update and return contact with correct data on success', async () => {
       const existingContacts = await mockAddManyContact()
       const randomContact = faker.random.arrayElement(existingContacts)
