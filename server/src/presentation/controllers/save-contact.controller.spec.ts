@@ -1,4 +1,4 @@
-import { LoadContactByIdUseCase, SaveContactUseCaseSpy } from '@/domain/mocks/mock-usecases'
+import { LoadContactByIdUseCaseSpy, SaveContactUseCaseSpy } from '@/domain/mocks/mock-usecases'
 import { SaveContactController } from './save-contact.controller'
 import { ok } from '@/presentation/helpers'
 import { mockSaveContactRequest } from '@/presentation/mocks/mock-controllers'
@@ -6,12 +6,12 @@ import { mockSaveContactRequest } from '@/presentation/mocks/mock-controllers'
 type SutTypes = {
   sut: SaveContactController
   saveContactUseCase: SaveContactUseCaseSpy
-  loadContactByIdUseCase: LoadContactByIdUseCase
+  loadContactByIdUseCase: LoadContactByIdUseCaseSpy
 }
 
 const makeSut = (): SutTypes => {
   const saveContactUseCase = new SaveContactUseCaseSpy()
-  const loadContactByIdUseCase = new LoadContactByIdUseCase()
+  const loadContactByIdUseCase = new LoadContactByIdUseCaseSpy()
   const sut = new SaveContactController(saveContactUseCase, loadContactByIdUseCase)
   return { sut, saveContactUseCase, loadContactByIdUseCase }
 }

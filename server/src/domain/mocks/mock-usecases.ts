@@ -36,7 +36,7 @@ export class SaveContactUseCaseSpy implements ISaveContactUseCase {
   }
 }
 
-export class LoadContactByIdUseCase implements ILoadContactByIdUseCase {
+export class LoadContactByIdUseCaseSpy implements ILoadContactByIdUseCase {
   params?: ILoadContactByIdUseCase.Params
   result: ILoadContactByIdUseCase.Result = mockContactModel()
 
