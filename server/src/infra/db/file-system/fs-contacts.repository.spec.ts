@@ -2,7 +2,10 @@ import faker from 'faker'
 import * as testDb from '@/test-helpers/db'
 import { mockAddOneContact, mockAddManyContact } from './test-helpers/fs-contacts'
 import { FileSystemContactsRepository } from './fs-contacts.repository'
-import { mockAddContactUseCaseParams } from '@/domain/mocks/mock-usecases'
+import {
+  mockAddContactUseCaseParams,
+  mockSaveContactUseCaseParams
+} from '@/domain/mocks/mock-usecases'
 
 const makeSut = (): FileSystemContactsRepository => {
   return new FileSystemContactsRepository()
@@ -74,13 +77,37 @@ describe('Contacts FileSystem Repository', () => {
       expect(result).toBeNull()
     })
 
-    it('should return correct contact data on success', async () => {
+    it('should return contact with correct data on success', async () => {
       const existingContacts = await mockAddManyContact()
       const randomContact = faker.random.arrayElement(existingContacts)
 
       const result = await sut.loadById({ id: randomContact.id })
 
       expect(result).toEqual(randomContact)
+    })
+  })
+
+  describe('save()', () => {
+    it('should return null if no contact exists by id', async () => {
+      const result = await sut.save(mockSaveContactUseCaseParams())
+      expect(result).toBeNull()
+    })
+
+    it('should update and return contact with correct data on success', async () => {
+      const existingContacts = await mockAddManyContact()
+      const randomContact = faker.random.arrayElement(existingContacts)
+
+      const saveContactUseCaseParams = mockSaveContactUseCaseParams()
+      const result = await sut.save({
+        ...saveContactUseCaseParams,
+        contactId: randomContact.id
+      })
+
+      expect(result).toEqual({
+        id: randomContact.id,
+        ...saveContactUseCaseParams,
+        contactId: undefined
+      })
     })
   })
 })
