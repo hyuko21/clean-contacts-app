@@ -2,6 +2,7 @@ import cuid from 'cuid'
 import { AbstractModel } from '@/common/models'
 import { FileSystemHelper } from './helper'
 import { IAbstractRepository } from '@/common/db/protocols'
+import { updateObj } from '@/utils/object'
 
 export abstract class FileSystemAbstractRepository<T extends AbstractModel> implements IAbstractRepository<T> {
   readonly repository: IAbstractRepository.Repository<T>
@@ -50,7 +51,7 @@ class FileSystemAbstractRepositoryFactory<T extends AbstractModel> implements IA
     let updatedItem
     const newData = storedData.map((item) => {
       if (item.id === id) {
-        updatedItem = { ...item, ...data }
+        updatedItem = updateObj(item, data)
         return updatedItem
       }
       return item
