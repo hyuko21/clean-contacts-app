@@ -10,7 +10,7 @@ export namespace IAbstractRepository {
     find: () => Promise<T[]>
     findById: (id: string) => Promise<T | undefined>
     add: (item: Omit<T, 'id'>) => Promise<T>
-    replace: (data: T[]) => Promise<boolean>
+    replace: (data: T[]) => Promise<T[]>
     delete: () => Promise<boolean>
   }
 }

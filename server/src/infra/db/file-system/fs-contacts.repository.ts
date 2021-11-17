@@ -1,8 +1,13 @@
-import { IAddContactRepository, ICheckContactByEmailRepository } from '@/data/protocols/db'
+import {
+  IAddContactRepository,
+  ICheckContactByEmailRepository,
+  IListContactRepository
+} from '@/data/protocols/db'
 import { FileSystemAbstractRepository } from '@/common/db/file-system'
 import { ContactModel } from '@/domain/models'
 
-export class FileSystemContactsRepository extends FileSystemAbstractRepository<ContactModel> implements ICheckContactByEmailRepository, IAddContactRepository {
+export class FileSystemContactsRepository extends FileSystemAbstractRepository<ContactModel>
+  implements ICheckContactByEmailRepository, IAddContactRepository, IListContactRepository {
   constructor () {
     super({ filename: FileSystemContactsRepository.filename })
   }
@@ -21,6 +26,10 @@ export class FileSystemContactsRepository extends FileSystemAbstractRepository<C
       address: params.address
     })
     return true
+  }
+
+  async list (): Promise<IListContactRepository.Result> {
+    return this.repository.find()
   }
 }
 

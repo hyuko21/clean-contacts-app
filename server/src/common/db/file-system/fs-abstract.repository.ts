@@ -53,13 +53,15 @@ class FileSystemAbstractRepositoryFactory<T extends AbstractModel> implements IA
     return newItem
   }
 
-  async replace (data: T[]): Promise<boolean> {
+  async replace (data: T[]): Promise<T[]> {
     const content = JSON.stringify(data)
-    return FileSystemHelper.getInstance().addContents(this.config.filename, content)
+    await FileSystemHelper.getInstance().addContents(this.config.filename, content)
+    return this.find()
   }
 
   async delete (): Promise<boolean> {
-    return this.replace([])
+    await this.replace([])
+    return true
   }
 }
 
