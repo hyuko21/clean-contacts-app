@@ -183,11 +183,8 @@ describe('Contacts Routes', () => {
       requestTest = agentTest.patch(apiPath())
     })
 
-    it('should return 200 with `success` as false if contact not found by id', async () => {
-      await requestTest.expect(200, {
-        success: false,
-        error: 'Contact not found'
-      })
+    it('should return 404 if contact not found by id', async () => {
+      await requestTest.expect(404, { error: 'Contact not found' })
     })
 
     describe('when contact exists', () => {

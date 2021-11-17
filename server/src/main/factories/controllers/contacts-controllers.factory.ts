@@ -6,7 +6,6 @@ import {
 import {
   makeDbAddContactUseCase,
   makeDbListContactUseCase,
-  makeDbLoadContactByIdUseCase,
   makeDbSaveContactUseCase
 } from '@/main/factories/usecases/contacts-usecases.factory'
 import { IController } from '@/presentation/protocols'
@@ -20,8 +19,5 @@ export const makeListContactController = (): IController => {
 }
 
 export const makeSaveContactController = (): IController => {
-  return new SaveContactController(
-    makeDbSaveContactUseCase(),
-    makeDbLoadContactByIdUseCase()
-  )
+  return new SaveContactController(makeDbSaveContactUseCase())
 }

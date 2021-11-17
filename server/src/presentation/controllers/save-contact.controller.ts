@@ -1,22 +1,14 @@
-import {
-  ILoadContactByIdUseCase,
-  ISaveContactUseCase
-} from '@/domain/usecases'
+import { ISaveContactUseCase } from '@/domain/usecases'
 import { HttpResponse, IController } from '@/presentation/protocols'
 import { makeAppResponse, ok } from '@/presentation/helpers'
 
 export class SaveContactController implements IController {
   constructor (
-    private readonly saveContactUseCase: ISaveContactUseCase,
-    private readonly loadContactByIdUseCase: ILoadContactByIdUseCase
+    private readonly saveContactUseCase: ISaveContactUseCase
   ) {}
 
   async handle (request: SaveContactController.Request): Promise<HttpResponse> {
-    let contact = await this.loadContactByIdUseCase.execute({ id: request.contactId })
-    if (!contact) {
-      return ok(makeAppResponse({ error: 'Contact not found' }))
-    }
-    contact = await this.saveContactUseCase.execute(request)
+    const contact = await this.saveContactUseCase.execute(request)
     const response = makeAppResponse({ result: contact })
     return ok(response)
   }

@@ -5,7 +5,8 @@ export const adaptExpressRoute = (controller: IController): RequestHandler => {
   return async (request: Request, response: Response) => {
     const requestData = {
       ...(request.body ?? {}),
-      ...(request.params ?? {})
+      ...(request.params ?? {}),
+      contactId: request.contactId
     }
 
     const httpResponse = await controller.handle(requestData)
