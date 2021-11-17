@@ -145,4 +145,25 @@ describe('Contacts FileSystem Repository', () => {
       })
     })
   })
+
+  describe('loadById()', () => {
+    it('should return false if contact not deleted by id', async () => {
+      const contactId = faker.datatype.uuid()
+      const result = await sut.deleteById({ id: contactId })
+      expect(result).toBe(false)
+    })
+
+    it('should return true and delete correct contact', async () => {
+      const existingContacts = await mockAddManyContact()
+      const randomContact = faker.random.arrayElement(existingContacts)
+
+      const result = await sut.deleteById({ id: randomContact.id })
+
+      const stillContacts = await sut.repository.find()
+      expect(result).toBe(true)
+      expect(stillContacts).toEqual(
+        existingContacts.filter(item => item.id !== randomContact.id)
+      )
+    })
+  })
 })
