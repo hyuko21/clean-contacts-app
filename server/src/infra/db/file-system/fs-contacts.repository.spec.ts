@@ -1,6 +1,6 @@
 import faker from 'faker'
 import * as testDb from '@/test-helpers/db'
-import { mockAddOneContact } from './test-helpers/fs-contacts'
+import { mockAddOneContact, mockAddManyContact } from './test-helpers/fs-contacts'
 import { FileSystemContactsRepository } from './fs-contacts.repository'
 import { mockAddContactUseCaseParams } from '@/domain/mocks/mock-usecases'
 
@@ -51,6 +51,19 @@ describe('Contacts FileSystem Repository', () => {
       const [addedContact] = await sut.repository.find()
       expect(result).toBe(true)
       expect(addedContact).toEqual(expect.objectContaining(params))
+    })
+  })
+
+  describe('list()', () => {
+    it('should return empty if no contacts exists', async () => {
+      const result = await sut.list()
+      expect(result).toEqual([])
+    })
+
+    it('should return contacts list on success', async () => {
+      const existingContacts = await mockAddManyContact()
+      const result = await sut.list()
+      expect(result).toEqual(expect.arrayContaining(existingContacts))
     })
   })
 })
