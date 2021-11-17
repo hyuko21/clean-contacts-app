@@ -1,10 +1,10 @@
 import { ContactModel } from '@/domain/models'
 
-export interface ISaveContactUseCase {
-  execute: (params: ISaveContactUseCase.Params) => Promise<ISaveContactUseCase.Result>
+export interface ISaveContactRepository {
+  save: (params: ISaveContactRepository.Params) => Promise<ISaveContactRepository.Result>
 }
 
-export namespace ISaveContactUseCase {
+export namespace ISaveContactRepository {
   export type Params = {
     name?: string
     email?: string
