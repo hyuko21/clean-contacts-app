@@ -13,3 +13,17 @@ export const AddContactValidation = celebrate({
     })
   })
 })
+
+export const SaveContactValidation = celebrate({
+  [Segments.BODY]: Joi.object().keys({
+    name: Joi.string(),
+    email: Joi.string().email(),
+    phone: Joi.string(),
+    address: Joi.object().not({}).keys({
+      houseNumber: Joi.number(),
+      streetName: Joi.string(),
+      city: Joi.string(),
+      state: Joi.string()
+    })
+  })
+})
