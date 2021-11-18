@@ -3,10 +3,10 @@ Contacts app to collect customer contacts information (with clean arch/code)
 
 # Project structure
 - `server` - Server application to handle http request over REST API
-  - Using Express, Typescript, Jest, celebrate (Joi validation as middleware).
+  - Using Express, Typescript, Jest, celebrate (Joi validation as middleware)
   - Under Clean Architecture/Code and SOLID principles
 - `client` - Client application to serve facing pages and user interaction.
-  - Using ReactJS, 
+  - Using ReactJS, Typescript, Tailwind CSS, React hooks, Axios
 
 # Running the applications
 > Disclaimer: presuming you have `docker` and `docker-compose` safely installed in your machine
