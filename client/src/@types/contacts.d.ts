@@ -14,4 +14,4 @@ type ContactAddress = {
   streetName: string
 }
 
-type EditContact = Omit<Contact & ContactAddress, 'id' | 'address'>
+type EditContact = Omit<Contact & ContactAddress, 'address'>

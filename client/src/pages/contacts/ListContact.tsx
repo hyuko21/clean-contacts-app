@@ -7,13 +7,31 @@ import {
 import { useEffect, useState } from 'react';
 import { Loading } from '../../components/Loading';
 import { useContact } from '../../hooks/use-contact';
+import { getEditingContact } from '../../utils/contact';
+import { EditContactDialog } from './EditContact';
 import { ViewContactDialog } from './ViewContact';
 
 export function ListContactPage() {
-  const { listContact } = useContact()
+  const {
+    editingContact,
+    editingContactActionType,
+    updateEditingContact,
+    startEditingContact,
+    isLoading,
+    listContact,
+    editContact
+  } = useContact()
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [isLoadingContacts, setIsLoadingContacts] = useState(false);
   const [viewingContact, setViewingContact] = useState<Contact | null>(null);
+  const [shouldUpdate, setShouldUpdate] = useState(false);
+
+  const handleEditContact = async () => {
+    const changesHasBeenMade = await editContact()
+    if (changesHasBeenMade) {
+      setShouldUpdate(!shouldUpdate)
+    }
+  }
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -23,7 +41,7 @@ export function ListContactPage() {
       setIsLoadingContacts(false);
     };
     fetchContacts();
-  }, []);
+  }, [shouldUpdate]);
 
   if (isLoadingContacts) {
     return <Loading title='Loading contacts' />
@@ -37,13 +55,22 @@ export function ListContactPage() {
           onClose={() => setViewingContact(null)}
         />
       )}
+      {editingContact && (
+        <EditContactDialog
+          editingContactActionType={editingContactActionType}
+          editingContact={editingContact}
+          isLoading={isLoading}
+          setEditingContact={updateEditingContact}
+          handleEditContact={handleEditContact}
+        />
+      )}
       <main>
         <div className='max-w-7xl mx-auto py-6 sm:px-6 lg:px-8'>
           <div className='flex justify-center items-center'>
             <button
               type='button'
               className='flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-600 hover:bg-gray-500 focus:outline-none focus:border-gray-700 focus:shadow-outline-gray active:bg-gray-700'
-              onClick={() => {}}
+              onClick={() => updateEditingContact({} as EditContact, 'add')}
             >
               <PlusCircleIcon className='-ml-1 mr-3 h-5 w-5' />
               Add Contact
@@ -118,7 +145,7 @@ export function ListContactPage() {
                                     <EyeIcon className='h-6 w-6' />
                                   </button>
                                   <button
-                                    onClick={() => {}}
+                                    onClick={() => startEditingContact(getEditingContact(contact), 'save')}
                                     className='mx-3 text-yellow-600 hover:text-yellow-900'
                                   >
                                     <PencilIcon className='h-6 w-6' />

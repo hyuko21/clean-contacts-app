@@ -1,29 +1,69 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import { ContactsService } from '../services/api/contacts'
+import { isEqual } from '../utils/object'
+import { ContactsService, EditContactPayload } from '../services/api/contacts'
+
+export type EditContactActionType = 'add' | 'save'
 
 export const useContact = () => {
-  const [editContact, setEditContact] = useState<EditContact>({} as EditContact)
+  const [startContactState, setStartContactState] = useState<EditContact | null>(null)
+  const [editingContact, setEditingContact] = useState<EditContact | null>(null)
+  const [editingContactActionType, setEditingContactActionType] = useState<EditContactActionType>()
   const [isLoading, setIsLoading] = useState(false)
 
-  const addContact = async () => {
+  const startEditingContact = (
+    _editingContact: EditContact | null,
+    _editingContactActionType?: EditContactActionType
+  ) => {
+    setStartContactState(_editingContact)
+    updateEditingContact(_editingContact, _editingContactActionType)
+  }
+
+  const updateEditingContact = (
+    _editingContact: EditContact | null,
+    _editingContactActionType?: EditContactActionType
+  ) => {
+    setEditingContact(_editingContact)
+    setEditingContactActionType(_editingContactActionType)
+  }
+
+  const editingContactHasChanges = () => {
+    return !isEqual(startContactState, editingContact)
+  }
+
+  const editContact = async (): Promise<boolean> => {
+    if (!editingContact || !editingContactHasChanges()) {
+      setEditingContact(null)
+      return false
+    }
+
     setIsLoading(true)
     try {
-      const { data } = await ContactsService.addContact({
-        name: editContact.name,
-        email: editContact.email,
-        phone: editContact.phone,
+      const service = (() => {
+        switch (editingContactActionType) {
+          case 'save': return (data: EditContactPayload) => {
+            return ContactsService.saveContact(editingContact.id, data)
+          }
+          case 'add':
+          default: return (data: EditContactPayload) => ContactsService.addContact(data)
+        }
+      })()
+      const { data } = await service({
+        name: editingContact.name,
+        email: editingContact.email,
+        phone: editingContact.phone,
         address: {
-          houseNumber: editContact.houseNumber,
-          streetName: editContact.streetName,
-          city: editContact.city,
-          state: editContact.state
+          houseNumber: editingContact.houseNumber,
+          streetName: editingContact.streetName,
+          city: editingContact.city,
+          state: editingContact.state
         }
       })
 
       if (data.success) {
-        setEditContact({} as EditContact)
+        setEditingContact(null)
         toast.success('Contact info saved')
+        return true
       } else {
         toast.error(data.error)
       }
@@ -32,16 +72,19 @@ export const useContact = () => {
     } finally {
       setIsLoading(false)
     }
+    return false
   }
 
   const listContact = () => ContactsService.listContact()
 
   return {
-    editContact,
-    setEditContact,
+    editingContact,
+    editingContactActionType,
+    startEditingContact,
+    updateEditingContact,
     isLoading,
 
-    addContact,
+    editContact,
     listContact
   }
 }

@@ -6,11 +6,13 @@ export class Client {
   private static resource: string
   private readonly _baseUrl: string
   private _data: any;
+  private _id?: string
 
   private constructor(resource: string) {
     Client.resource = resource
     this._baseUrl = resource
     this._data = {}
+    this._id = undefined
   }
 
   static getInstance(resource: string): Client {
@@ -20,8 +22,24 @@ export class Client {
     return Client.instance
   }
 
+  private resetState() {
+    this._data = {}
+    this._id = undefined
+  }
+
   get baseUrl() {
-    return this._baseUrl;
+    let url = this._baseUrl;
+
+    if (this._id) {
+      url += `/${this._id}`;
+    }
+
+    return url;
+  }
+
+  id(id: string) {
+    this._id = id;
+    return this;
   }
 
   data(data: any) {
@@ -29,12 +47,22 @@ export class Client {
     return this;
   }
 
+  async doRequest(method: 'post' | 'get' | 'patch') {
+    const response = await api[method](this.baseUrl, this._data)
+    this.resetState()
+    return response
+  }
+
   post() {
-    return api.post(this.baseUrl, this._data);
+    return api.post(this.baseUrl, this._data)
   }
 
   get() {
     return api.get(this.baseUrl)
+  }
+
+  patch() {
+    return api.patch(this.baseUrl, this._data)
   }
 }
 
