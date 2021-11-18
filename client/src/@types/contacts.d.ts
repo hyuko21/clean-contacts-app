@@ -7,6 +7,7 @@ type Contact = {
 }
 
 type ContactAddress = {
+  country: string
   houseNumber: number
   country: string
   city: string

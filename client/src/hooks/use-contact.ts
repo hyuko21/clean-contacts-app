@@ -54,6 +54,7 @@ export const useContact = () => {
         email: editingContact.email,
         phone: editingContact.phone,
         address: {
+          country: editingContact.country,
           houseNumber: editingContact.houseNumber,
           streetName: editingContact.streetName,
           city: editingContact.city,
