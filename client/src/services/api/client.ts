@@ -47,22 +47,10 @@ export class Client {
     return this;
   }
 
-  async doRequest(method: 'post' | 'get' | 'patch') {
+  async doRequest(method: 'post' | 'get' | 'patch' | 'delete') {
     const response = await api[method](this.baseUrl, this._data)
     this.resetState()
     return response
-  }
-
-  post() {
-    return api.post(this.baseUrl, this._data)
-  }
-
-  get() {
-    return api.get(this.baseUrl)
-  }
-
-  patch() {
-    return api.patch(this.baseUrl, this._data)
   }
 }
 

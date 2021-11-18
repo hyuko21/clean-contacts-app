@@ -8,6 +8,7 @@ export type EditContactActionType = 'add' | 'save'
 export const useContact = () => {
   const [startContactState, setStartContactState] = useState<EditContact | null>(null)
   const [editingContact, setEditingContact] = useState<EditContact | null>(null)
+  const [deletingContact, setDeletingContact] = useState<Contact | null>(null)
   const [editingContactActionType, setEditingContactActionType] = useState<EditContactActionType>()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -75,6 +76,29 @@ export const useContact = () => {
     return false
   }
 
+  const deleteContact = async (): Promise<boolean> => {
+    if (!deletingContact) {
+      return false
+    }
+
+    setIsLoading(true)
+    try {
+      const { data } = await ContactsService.deleteContact(deletingContact.id)
+      if (data.success) {
+        setDeletingContact(null)
+        toast.success('Contact deleted')
+        return true
+      } else {
+        toast.error(data.error)
+      }
+    } catch (error) {
+      toast.error('Something went wrong. Please try again later')
+    } finally {
+      setIsLoading(false)
+    }
+    return false
+  }
+
   const listContact = () => ContactsService.listContact()
 
   return {
@@ -82,9 +106,12 @@ export const useContact = () => {
     editingContactActionType,
     startEditingContact,
     updateEditingContact,
+    deletingContact,
+    setDeletingContact,
     isLoading,
 
     editContact,
-    listContact
+    listContact,
+    deleteContact
   }
 }

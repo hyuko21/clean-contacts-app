@@ -6,9 +6,9 @@ import { EditContactActionType } from '../../hooks/use-contact';
 type EditContactDialogProps = {
   editingContact?: EditContact
   setEditingContact: (editingContact: EditContact | null, editingContactActionType?: EditContactActionType) => void
-  editingContactActionType?: EditContactActionType,
+  editingContactActionType?: EditContactActionType
   isLoading: boolean
-  handleEditContact: (editingContact?: EditContact, actionType?: EditContactActionType) => Promise<void>
+  handleEditContact: () => Promise<void>
 };
 
 export function EditContactDialog({

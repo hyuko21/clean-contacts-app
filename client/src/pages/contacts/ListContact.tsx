@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { Loading } from '../../components/Loading';
 import { useContact } from '../../hooks/use-contact';
 import { getEditingContact } from '../../utils/contact';
+import { DeleteContactDialog } from './DeleteContact';
 import { EditContactDialog } from './EditContact';
 import { ViewContactDialog } from './ViewContact';
 
@@ -17,9 +18,12 @@ export function ListContactPage() {
     editingContactActionType,
     updateEditingContact,
     startEditingContact,
+    deletingContact,
+    setDeletingContact,
     isLoading,
     listContact,
-    editContact
+    editContact,
+    deleteContact
   } = useContact()
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [isLoadingContacts, setIsLoadingContacts] = useState(false);
@@ -28,6 +32,13 @@ export function ListContactPage() {
 
   const handleEditContact = async () => {
     const changesHasBeenMade = await editContact()
+    if (changesHasBeenMade) {
+      setShouldUpdate(!shouldUpdate)
+    }
+  }
+
+  const handleDeleteContact = async () => {
+    const changesHasBeenMade = await deleteContact()
     if (changesHasBeenMade) {
       setShouldUpdate(!shouldUpdate)
     }
@@ -62,6 +73,14 @@ export function ListContactPage() {
           isLoading={isLoading}
           setEditingContact={updateEditingContact}
           handleEditContact={handleEditContact}
+        />
+      )}
+      {deletingContact && (
+        <DeleteContactDialog
+          deletingContact={deletingContact}
+          isLoading={isLoading}
+          setDeletingContact={setDeletingContact}
+          handleDeleteContact={handleDeleteContact}
         />
       )}
       <main>
@@ -151,7 +170,7 @@ export function ListContactPage() {
                                     <PencilIcon className='h-6 w-6' />
                                   </button>
                                   <button
-                                    onClick={() => {}}
+                                    onClick={() => setDeletingContact(contact)}
                                     className='mx-3 text-red-600 hover:text-red-900'
                                   >
                                     <XCircleIcon className='h-6 w-6' />

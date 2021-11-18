@@ -31,8 +31,13 @@ function saveContact(
   return Client.getInstance(resourceName).id(contactId).data(payload).doRequest('patch');
 }
 
+function deleteContact(contactId: string): Promise<ApiResponse> {
+  return Client.getInstance(resourceName).id(contactId).doRequest('delete');
+}
+
 export const ContactsService = {
   addContact,
   listContact,
-  saveContact
+  saveContact,
+  deleteContact
 };
