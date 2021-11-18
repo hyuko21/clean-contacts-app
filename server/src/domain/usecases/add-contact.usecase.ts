@@ -8,6 +8,7 @@ export namespace IAddContactUseCase {
     email: string
     phone: string
     address: {
+      country: string
       houseNumber: number
       streetName: string
       city: string

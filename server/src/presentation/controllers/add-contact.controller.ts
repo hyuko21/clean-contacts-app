@@ -6,17 +6,7 @@ export class AddContactController implements IController {
   constructor (private readonly addContactUseCase: IAddContactUseCase) {}
 
   async handle (request: AddContactController.Request): Promise<HttpResponse> {
-    const isValid = await this.addContactUseCase.execute({
-      name: request.name,
-      email: request.email,
-      phone: request.phone,
-      address: {
-        houseNumber: request.address.houseNumber,
-        streetName: request.address.streetName,
-        city: request.address.city,
-        state: request.address.state
-      }
-    })
+    const isValid = await this.addContactUseCase.execute(request)
     let response = makeAppResponse()
     if (!isValid) {
       response = makeAppResponse({
@@ -34,6 +24,7 @@ export namespace AddContactController {
     email: string
     phone: string
     address: {
+      country: string
       houseNumber: number
       streetName: string
       city: string

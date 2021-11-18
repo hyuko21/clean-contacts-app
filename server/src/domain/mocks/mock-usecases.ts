@@ -61,6 +61,7 @@ export const mockAddContactUseCaseParams = (): IAddContactUseCase.Params => ({
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber(),
   address: {
+    country: faker.address.countryCode(),
     houseNumber: faker.datatype.number(),
     streetName: faker.address.streetName(),
     city: faker.address.cityName(),
@@ -74,6 +75,7 @@ export const mockSaveContactUseCaseParams = (): ISaveContactUseCase.Params => ({
   email: faker.internet.email(),
   phone: faker.phone.phoneNumber(),
   address: {
+    country: faker.address.countryCode(),
     houseNumber: faker.datatype.number(),
     streetName: faker.address.streetName(),
     city: faker.address.cityName(),
