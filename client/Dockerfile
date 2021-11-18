@@ -8,12 +8,6 @@ RUN yarn --frozen-lockfile --silent
 
 COPY . .
 
-# lint & test
-# RUN yarn lint & yarn test
+EXPOSE 4201
 
-# building assets
-RUN yarn build
-
-EXPOSE 4202
-
-CMD ["yarn", "start:dev"]
+CMD ["yarn", "start"]
