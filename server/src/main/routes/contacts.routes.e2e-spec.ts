@@ -209,12 +209,8 @@ describe('Contacts Routes', () => {
   describe('PATCH /:contactId', () => {
     const apiPath = (contactId = faker.datatype.uuid()) => `${basePath}/${contactId}`
 
-    beforeEach(() => {
-      requestTest = agentTest.patch(apiPath())
-    })
-
     it('should return 404 if contact not found by id', async () => {
-      await requestTest.expect(404, { error: 'Contact not found' })
+      await agentTest.patch(apiPath()).expect(404, { error: 'Contact not found' })
     })
 
     describe('when contact exists', () => {
@@ -339,12 +335,8 @@ describe('Contacts Routes', () => {
   describe('DELETE /:contactId', () => {
     const apiPath = (contactId = faker.datatype.uuid()) => `${basePath}/${contactId}`
 
-    beforeEach(() => {
-      requestTest = agentTest.delete(apiPath())
-    })
-
     it('should return 404 if contact not found by id', async () => {
-      await requestTest.expect(404, { error: 'Contact not found' })
+      await agentTest.delete(apiPath()).expect(404, { error: 'Contact not found' })
     })
 
     describe('when contact exists', () => {

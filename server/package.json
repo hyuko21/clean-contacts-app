@@ -10,8 +10,8 @@
     "start": "node dist/main/server",
     "start:dev": "tsnd -r tsconfig-paths/register --respawn --exit-child --transpile-only src/main/server",
     "lint": "eslint",
-    "test": "jest",
-    "test:watch": "yarn test --watch --detectOpenHandles",
+    "test": "jest --detectOpenHandles",
+    "test:watch": "yarn test --watch",
     "test:unit": "yarn test:watch -c jest.unit-config.js",
     "test:e2e": "yarn test:watch -c jest.e2e-config.js"
   },
